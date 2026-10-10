@@ -3,7 +3,7 @@
 // Les appels météo et GitHub ne sont jamais mis en cache ici : l'application
 // gère elle-même sa mémoire de la dernière météo téléchargée.
 const CACHE = "guide-bar-c3767c3bcc49";
-const SHELL = ["./", "./index.html", "./logonna.html", "./pirou.html", "./logonna.webmanifest", "./pirou.webmanifest", "./logonna.png", "./pirou.png"];
+const SHELL = ["./", "./index.html", "./logonna.html", "./pirou.html", "./logonna-manifest.json", "./pirou-manifest.json", "./logonna.png", "./pirou.png"];
 
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL).catch(() => {})).then(() => self.skipWaiting()));

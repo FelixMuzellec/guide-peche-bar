@@ -1,0 +1,19 @@
+{
+  "id": "./logonna.html",
+  "name": "Bar · Logonna-Daoulas",
+  "short_name": "Bar Logonna",
+  "lang": "fr",
+  "start_url": "./logonna.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#020617",
+  "theme_color": "#020617",
+  "icons": [
+    {
+      "src": "logonna.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

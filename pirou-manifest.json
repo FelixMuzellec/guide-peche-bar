@@ -1,0 +1,19 @@
+{
+  "id": "./pirou.html",
+  "name": "Bar · Pirou Plage",
+  "short_name": "Bar Pirou",
+  "lang": "fr",
+  "start_url": "./pirou.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#020617",
+  "theme_color": "#020617",
+  "icons": [
+    {
+      "src": "pirou.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
