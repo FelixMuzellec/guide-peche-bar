@@ -1,0 +1,22 @@
+{
+  "name": "guide-peche-bar",
+  "version": "6.0.0",
+  "description": "Guides de pêche du bar — Logonna-Daoulas et Pirou Plage",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test:unit": "node tests/unit.mjs logonna && node tests/unit.mjs pirou",
+    "test:e2e": "node tests/e2e.mjs",
+    "test": "npm run test:unit && npm run test:e2e"
+  },
+  "license": "UNLICENSED",
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "playwright": "^1.56.0",
+    "esbuild": "^0.24.2"
+  },
+  "private": true,
+  "type": "module"
+}
