@@ -65,7 +65,7 @@ export const SITE = {
     defaultPort: "brest",
     ports: {
       brest: { label: "Brest", kind: "harmonic", station: "brest", z0: 4.13, lagH: 0,
-        accuracy: "SHOM ±3,9 min · ±4 cm (5 mois de contrôle)" },
+        accuracy: "contrôlée contre les tables SHOM : ±3,9 min · ±4 cm (5 mois de contrôle)" },
     },
   },
   sstTypical: [9, 18.5],
@@ -99,9 +99,9 @@ export const GENERAL_PRINCIPLES = {
       explain: "La rade de Brest est une mer intérieure bien abritée, eau claire. Canne 5-15g, tresse PE0.6-0.8, fluoro 25-30/100, leurres petits/discrets. Approche silencieuse — souvent pêche à vue en bordure.",
     },
     {
-      rule: "Coefficient modéré (50-75) généralement optimal en rade",
-      source: "peche-poissons.com (Landévennec) / Desperadiens",
-      explain: "La rade n'a pas les courants du Cotentin. Sauf au Goulet et aux pointes (Armorique, Espagnols), les gros coefs n'apportent pas d'avantage — ils peuvent même troubler l'eau. Sur Térénez/Landévennec, coef 40-55 explicitement recommandé par Thierry Sauvin.",
+      rule: "Coefficient : pas de règle unique en rade, le poste décide",
+      source: "peche-poissons.com — « Escapade en rade de Brest, autour de Landévennec » (julien, 30/03/2022 ; photos Thierry Sauvin)",
+      explain: "La rade n'a pas les courants du Cotentin, sauf au Goulet et aux pointes (Armorique, Espagnols). Le même article donne deux réglages opposés : l'île de Térénez « surtout pêchant par faible coefficient (40 à 55) », le sillon du Pal dès que le coefficient atteint 90. Chaque fiche porte donc sa propre plage.",
     },
   ],
 };
@@ -181,6 +181,8 @@ export const SPOTS = [
       { name:"Jerkbait suspending 110mm", color:"Ayu / Mullet", weight:"12-16g", technique:"Sur les zones moins encombrées côté pointe. Twitch lent, pauses longues." },
     ],
     access:"Depuis Logonna-Daoulas bourg, direction Moulin Mer/Pointe du Château. Parking devant le centre nautique. Accès direct aux bordures rocheuses à pied. Bottes suffisent, semelles crantées utiles sur goémon humide.",
+    // Sécurité : consignes affichées dans le verdict et l'onglet Accès (« when » = active selon le jour).
+    securite:[{ t:"Goémon humide glissant : semelles crantées.", s:"fiche du spot (accès)"}],
   },
 
   // ══════════════════════════════════════════════════════════
@@ -189,6 +191,7 @@ export const SPOTS = [
   {
     id:"bendy", zone:"local", isLocal:true, dangerLevel:1,
     name:"Pointe du Bendy", subtitle:"Anse du Bendy, Logonna-Daoulas",
+    riviere: "rivière de Daoulas",   // fiche : « sur la rive sud de la rivière de Daoulas »
     distance:"10 min", distMin:10, coords:"48°19'N 4°19'W",
     type:"POINTE ROCHEUSE", color:"#4ade80",
     // Fiche terrain : ce que le fond permet ou interdit, et comment monter le leurre.
@@ -247,6 +250,8 @@ export const SPOTS = [
       { name:"Jerkbait suspending", color:"Ayu / Mullet", weight:"12-16g", technique:"Twitchs courts entre les blocs rocheux côté pointe." },
     ],
     access:"Depuis Logonna-Daoulas bourg, route vers Pointe du Bendy (fléché). Parking au bout de la route. Accès à pied par sentier côtier (GR34). Pêche depuis les rochers de la pointe ou sur les platiers selon marée.",
+    // Sécurité : consignes affichées dans le verdict et l'onglet Accès (« when » = active selon le jour).
+    securite:[],
   },
 
   // ══════════════════════════════════════════════════════════
@@ -315,6 +320,8 @@ export const SPOTS = [
       { name:"Shad souple 10-12 cm en texan", color:"Natural / blanc", weight:"10-16 g", technique:"Texan indispensable près des parcs et des corps-morts." },
     ],
     access:"Depuis Logonna : Daoulas puis Loperhet, direction port de Rostiviec. Parking à la cale, sentier côtier vers l'anse de Penfoul. Aucune difficulté.",
+    // Sécurité : consignes affichées dans le verdict et l'onglet Accès (« when » = active selon le jour).
+    securite:[],
   },
 
   // ══════════════════════════════════════════════════════════
@@ -380,6 +387,8 @@ export const SPOTS = [
       { name:"Pintail / slug weightless", color:"White UV / Natural", weight:"5-10 g sans plomb", technique:"Pêche à vue dans les bordures peu profondes si eau claire et soleil." },
     ],
     access:"Depuis Logonna : D770 vers L'Hôpital-Camfrout. Parkings du bourg et de Kerhascoët. Accès à Troaon, Kerdreolet et au cordon de Tibidy (l'îlot de Tibidy est privé : ne pas y monter). Bottes ou waders selon le poste.",
+    // Sécurité : consignes affichées dans le verdict et l'onglet Accès (« when » = active selon le jour).
+    securite:[{ t:"L'îlot de Tibidy est privé : ne pas y monter.", s:"fiche du spot (accès)"}],
   },
 
 
@@ -439,7 +448,7 @@ export const SPOTS = [
         { id:"la3", label:"Crépuscule", phase:"pm", offsetBefore:-1.0, offsetAfter:2.0, tidePhaseType:"variable", priority:"bon",
           note:"Coup du soir universellement favorable, à cumuler avec une des deux fenêtres ci-dessus." },
       ],
-      lifeHack:"Le sillon est long (~500m selon Landévennec/Sauvin, transposable ici). Repérer à BM les veines et les goémons. Le changement de côté (extérieur sillon → intérieur anse) suit la marée. Refuge par vent de secteur N quand les autres spots locaux sont moins confortables.",
+      lifeHack:"Repérer à BM les veines et les goémons. Le changement de côté (extérieur sillon → intérieur anse) suit la marée. Refuge par vent de secteur N quand les autres spots locaux sont moins confortables.",
     },
     lures:[
       { name:"Shad 10-14cm tête plombée", color:"Natural / Smoke / Ayu", weight:"10-18g", technique:"Prospection longue le long du sillon côté rade." },
@@ -447,6 +456,8 @@ export const SPOTS = [
       { name:"LS weightless (pintail, slug)", color:"White / Natural / UV", weight:"5-10g sans plomb", technique:"Pêche fine dans l'anse à eau calme, à vue si possible. Approche silencieuse." },
     ],
     access:"D770 puis direction Lauberlac'h / Plougastel-Daoulas sud. Parking à la cale de l'anse. Sentier côtier (GR34) longe le sillon — accès direct aux deux côtés. Pas de difficulté technique.",
+    // Sécurité : consignes affichées dans le verdict et l'onglet Accès (« when » = active selon le jour).
+    securite:[],
   },
 
   // ══════════════════════════════════════════════════════════
@@ -470,6 +481,7 @@ export const SPOTS = [
     },
     coefBand:[35,55,90,112],
     // Pointe majeure exposée au flux principal : supporte les vives-eaux.
+    courantFort: { above: 70, t: "vive-eau ; le courant est « bien sensible à la pointe de l'Armorique » (lordjimcroisieres.com, 0,5 à 3 nœuds en rade)." },
     coefMin:55, coefIdeal:90, coefMax:112, houleMax:1.5,
     exposedAngles:[270,292.5,247.5], shelteredAngles:[90,112.5,67.5],
     weatherNote:"Pointe qui avance dans la rade, côté nord de Plougastel. Source lordjimcroisieres : 'le courant est bien sensible à la pointe de l'Armorique' — un des points de courant notable de la rade.",
@@ -505,6 +517,8 @@ export const SPOTS = [
       { name:"Stickbait 125-140mm", color:"Sardine / Ghost", weight:"25-35g", technique:"Walk-the-dog en surface au crépuscule si pas trop de courant. Patchinko 125 ou 140 adapté." },
     ],
     access:"Depuis Logonna : D770 puis direction Plougastel-Daoulas nord, route de la Pointe de l'Armorique. Parking en bout de route. Sentier côtier. Accès rochers par descente courte.",
+    // Sécurité : consignes affichées dans le verdict et l'onglet Accès (« when » = active selon le jour).
+    securite:[],
   },
 
   // ══════════════════════════════════════════════════════════
@@ -534,43 +548,46 @@ export const SPOTS = [
     },
     coefBand:[30,50,85,108], coefHardMax:115,
     // Confluence Aulne/rade, courant soutenu : au-delà de 115 le sillon n'est plus tenable du bord.
+    // Sortie de l'Aulne : l'un des points de courant sensible de la rade (lordjimcroisieres.com), comme l'Armorique.
+    courantFort: { above: 70, t: "vive-eau ; courant sensible à la sortie de l'Aulne (lordjimcroisieres.com, 0,5 à 3 nœuds en rade)." },
+    riviere: "Aulne",
     coefMin:50, coefIdeal:85, coefMax:108, houleMax:1.2,
     exposedAngles:[315,337.5,292.5], shelteredAngles:[135,157.5,112.5],
-    weatherNote:"Source peche-poissons.com : Landévennec niché 'au fin fond de la rade de Brest, pieds dans l'eau, abrité des vents dominants, climat clément (palmiers).'",
+    weatherNote:"peche-poissons.com (2022) : « niché au fin fond de la rade de Brest » ; « les pieds dans l'eau, abrité des vents dominants, il bénéficie d'un climat clément ».",
     sources:[
       "peche.com — À la recherche du bar du côté du cimetière de bateaux en fond de rade de Brest",
       "voileaviron.org — livret des sites de la rade de Brest",
-      "peche-poissons.com / Thierry Sauvin — 'Escapade en rade de Brest, autour de Landévennec' (article de référence dédié)",
+      "peche-poissons.com — « Escapade en rade de Brest, autour de Landévennec » (julien, 30/03/2022 ; photos Thierry Sauvin) — https://peche-poissons.com/mer/mer-coins-de-peche-en-france-escapade-en-rade-de-brest-autour-de-landevennec-693207-php/",
       "peche.com — Rade de Brest (principes)",
       "lordjimcroisieres.com — Navigation Landévennec"
     ],
     topology:{
-      fond:{ text:"Source Sauvin : Cale de Port Maria avec mouillages bateaux de plaisance, bars qui maraudent entre les mouillages. Sillon des Anglais = 'flèche parallèle à la côte de près de 500m, élevages de moules qui bordent le littoral', platiers et sable.", confidence:"verified" },
+      fond:{ text:"peche-poissons.com (2022) : cale de Port Maria, « les bars y maraudent fréquemment entre les mouillages des bateaux de plaisance ». Sillon des Anglais : « cette flèche, parallèle à la côte, mesure près de 500m », bordée d'« élevages de moules ».", confidence:"verified" },
       structure:{ text:"Cale de Port Maria en bordure de l'église Notre-Dame = spot urbain confortable. Sillon des Anglais plus sauvage, accès GR34 dans la forêt domaniale. Les deux sont complémentaires selon marée et conditions.", confidence:"verified" },
-      exposition:{ text:"Source directe Sauvin : 'abrité des vents dominants'. Encaissement de la vallée de l'Aulne = protection maximale. Quasi inattaquable sauf par vent de N/NE strict.", confidence:"verified" },
+      exposition:{ text:"peche-poissons.com (2022) : « abrité des vents dominants ». Le reste (encaissement de l'Aulne, exposition au N/NE) est déduit de la carte.", confidence:"verified" },
       courant:{ text:"Source lordjimcroisieres : courant sensible à la sortie de l'Aulne (Landévennec). Marnage 6m en VE. Coude de l'Aulne crée des veines et contre-courants.", confidence:"verified" },
-      bars:{ text:"Source directe Sauvin : Cale Port Maria 'très prisée par les pêcheurs aux leurres, bars qui maraudent entre les mouillages'. Sillon des Anglais 'bars s'approchent, attirés par les élevages de moules'.", confidence:"verified" },
+      bars:{ text:"peche-poissons.com (2022) : la cale de Port Maria « est très prisée par les pêcheurs aux leurres » ; « la pêche aux leurres de surface y est très intéressante dès qu'un courant se manifeste et notamment à partir de la deuxième heure du jusant ». Sillon des Anglais : « les bars aiment s'en approcher, attirés par les élevages de moules ».", confidence:"verified" },
     },
     tidalRules:{
-      typeHeure:"MONTANT + ÉTALES (petits coefficients privilégiés)",
-      montantOuDescendant:"Montant principalement pour les deux spots. Les bars remontent l'Aulne avec le flot. Étales favorables pour Port Maria (eau calme, bars entre mouillages).",
-      description:"Fond de rade = logique estuaire classique + particularité des petits coefs. La zone voisine de Térénez est explicitement citée pour 'faibles coefs 40-55' par Sauvin, logique transposable.",
+      typeHeure:"JUSANT À PORT MARIA (SOURCE) · FLOT AU SILLON (DÉDUIT)",
+      montantOuDescendant:"Port Maria : jusant, « à partir de la deuxième heure », dès que le courant se manifeste (peche-poissons.com, 2022). Sillon des Anglais : les sources ne donnent pas de moment de marée ; le flot est retenu par déduction (les bars remontent l'Aulne avec la marée).",
+      description:"Aucune plage de coefficient n'est donnée pour Landévennec : la phrase « 40 à 55 » de l'article concerne l'île de Térénez. Un article peche.com rapporte une dizaine de bars d'environ 60 cm par coefficient 50.",
       windows:[
-        { id:"lv1", label:"Début de montant (Port Maria)", phase:"bm", offsetBefore:0.5, offsetAfter:3.0, tidePhaseType:"montant", priority:"prime",
-          note:"Bars de marée entre les mouillages, pêche fine. LS weightless idéal." },
-        { id:"lv2", label:"Flot établi (Sillon des Anglais)", phase:"bm", offsetBefore:1.5, offsetAfter:4.0, tidePhaseType:"montant", priority:"prime",
-          note:"Longer le sillon côté rade, parallèle aux élevages de moules. Bars attirés par la nourriture des cordes de moules." },
-        { id:"lv3", label:"Étale PM (Port Maria fine)", phase:"pm", offsetBefore:-0.5, offsetAfter:0.5, tidePhaseType:"renversement", priority:"bon",
-          note:"Cale au calme, pêche à vue ou micro-leurres weightless. Reference Sauvin." },
+        { id:"lv1", label:"Jusant dès la 2e heure (Port Maria)", phase:"pm", offsetBefore:1.0, offsetAfter:4.0, tidePhaseType:"descendant", priority:"prime",
+          note:"Leurres de surface dès qu'un courant se manifeste, « notamment à partir de la deuxième heure du jusant » (peche-poissons.com, 2022). Fin du créneau à PM+4 h : hypothèse." },
+        { id:"lv2", label:"Flot établi (Sillon des Anglais)", phase:"bm", offsetBefore:1.5, offsetAfter:4.0, tidePhaseType:"montant", priority:"bon",
+          note:"Longer le sillon côté rade, parallèle aux élevages de moules (source). Moment de marée déduit, aucune source ne le donne." },
       ],
-      lifeHack:"Approche très fine, eau souvent limpide dans le coude de l'Aulne. Sauvin recommande pêche à la mouche avec petites imitations de crabes comme alternative. Canne light 5-15g, fluoro 25/100 max.",
+      lifeHack:"Port Maria : attendre que le courant de jusant s'établisse avant de lancer en surface. Au sillon, longer les cordes de moules, ne jamais lancer en travers.",
     },
     lures:[
-      { name:"LS weightless (slug, pintail)", color:"Natural / White / UV", weight:"3-10g sans plomb", technique:"Référence Sauvin pour Port Maria et Térénez : 'leurre souple non lesté entre les goémons'. Arme maîtresse du fond de rade." },
+      { name:"Stickbait / leurre de surface", color:"Naturel / blanc", weight:"10-20 g", technique:"Port Maria : « la pêche aux leurres de surface y est très intéressante dès qu'un courant se manifeste », notamment à partir de la 2e heure du jusant (peche-poissons.com, 2022)." },
       { name:"Shad 3-4″ tête plombée légère", color:"Natural / Smoke / Ayu", weight:"7-14g", technique:"Le long du Sillon des Anglais, parallèle aux cordes de moules." },
       { name:"Petit jerkbait 90-110mm", color:"Crystal / Ayu", weight:"8-14g", technique:"Entre les mouillages de Port Maria. Animations subtiles." },
     ],
     access:"Depuis Logonna : Le Faou puis D60/D791 vers Landévennec. Port Maria = bord de route, parking église Notre-Dame. Sillon des Anglais = GR34 depuis Landévennec, marche dans la forêt domaniale (15-20min).",
+    // Sécurité : consignes affichées dans le verdict et l'onglet Accès (« when » = active selon le jour).
+    securite:[],
   },
 
   // ══════════════════════════════════════════════════════════
@@ -587,45 +604,49 @@ export const SPOTS = [
       encombrement:3,
       gratter:"non",
       couches:["surface", "sous-surface"],
-      montage:"Weightless entre les goémons (référence Sauvin). Côté Aulne seulement, une tête légère sur le sable.",
+      montage:"Souple non lesté entre les goémons (côté rade, peche-poissons.com). Côté Aulne seulement, une tête légère sur le sable.",
       conseils:["Côté rade, pêcher comme à Moulin Mer : au-dessus du goémon, lentement, avec des arrêts."],
       confidence:"inference",
       source:"Déduit de la description du fond de ce spot",
     },
-    coefBand:[25,45,80,100], coefHardMax:110,
-    // Étranglement de l'Aulne : la vitesse y monte très vite avec le coefficient.
-    coefMin:45, coefIdeal:80, coefMax:100, houleMax:1.2,
+    coefBand:[25,40,55,85], coefHardMax:110,
+    // Source (peche-poissons.com, 2022) : « surtout pêchant par faible coefficient (40 à 55) » → plateau 40-55.
+    // Les pentes (25 et 85) sont des hypothèses de modèle ; 85 est aussi le seuil où l'île cesse d'être accessible en permanence.
+    coefMin:40, coefIdeal:55, coefMax:85, houleMax:1.2,
     exposedAngles:[315,337.5,0], shelteredAngles:[135,157.5,180],
-    weatherNote:"Source Sauvin : 'accessible à marée basse et en permanence si coef inférieur à 85'. Attention accès conditionné à la marée.",
+    weatherNote:"peche-poissons.com (2022) : l'île « est accessible à marée basse et en permanence si le coefficient de marée est inférieur à 85 ». Accès conditionné à la marée.",
     sources:[
-      "peche-poissons.com / Thierry Sauvin — Article dédié : Île de Térénez 'spot intéressant, très productive en LS non lesté entre les goémons'",
+      "peche-poissons.com — « Escapade en rade de Brest, autour de Landévennec » (julien, 30/03/2022 ; photos Thierry Sauvin) — « Côté rade, la pêche du bar est très productive en animant un leurre souple non lesté entre les goémons » — https://peche-poissons.com/mer/mer-coins-de-peche-en-france-escapade-en-rade-de-brest-autour-de-landevennec-693207-php/",
       "lordjimcroisieres.com — Sortie Aulne / Landévennec courant",
     ],
     topology:{
       fond:{ text:"Île rocheuse avec goémons denses côté rade. Sable et galets côté Aulne. Tombants abrupts côté pointe ouest.", confidence:"verified" },
-      structure:{ text:"Source directe Sauvin : 'île qu'on rejoint par la D791, rive droite d'Aulne. Accessible à marée basse, et en permanence si coef < 85'. Deux faces : côté rade pour le leurre, bout d'île pour le surfcasting.", confidence:"verified" },
+      structure:{ text:"peche-poissons.com (2022) : « l'île de Térénez qu'on rejoint par la D791, rive droite d'Aulne » ; accessible à marée basse, et en permanence si le coefficient est inférieur à 85. Côté rade : leurre souple non lesté entre les goémons. « Au bout de l'île, en face du cimetière à bateaux, leurres et mouche donnent également de bons résultats », et le coin est excellent en surfcasting.", confidence:"verified" },
       exposition:{ text:"Sortie de l'Aulne. Protégée O/SO par Landévennec. Exposée NO/N vers la rade.", confidence:"inference" },
       courant:{ text:"Zone de sortie Aulne = courant sensible selon lordjimcroisieres. Plus marqué en VE forte.", confidence:"verified" },
-      bars:{ text:"Source directe Sauvin : 'Côté rade, la pêche du bar est très productive en animant un leurre souple non lesté entre les goémons. On peut aussi le traquer à vue avec de micro leurres souples ou bien à la mouche avec de petites imitations de crabes.' Au bout : 'très gros bars en surfcasting (demi-tête de calamar ou sardine entière), mais beaucoup de matériel perdu'.", confidence:"verified" },
+      bars:{ text:"peche-poissons.com (2022) : « Côté rade, la pêche du bar est très productive en animant un leurre souple non lesté entre les goémons. On peut aussi le traquer à vue avec de micro leurres souples ou bien à la mouche avec de petites imitations de crabes. » En surfcasting au bout de l'île : « de très gros bars en eschant avec une demi-tête de calamar ou une sardine entière » ; « on y laisse beaucoup de matériel ».", confidence:"verified" },
     },
     tidalRules:{
       typeHeure:"PETITS COEFS 40-55, 1h AVANT/APRÈS ÉTALES",
-      montantOuDescendant:"Source directe Sauvin : 'Le secteur est surtout pêchant par faible coefficient (40 à 55), une heure avant et après les étales.' Inversion totale de la règle classique.",
+      montantOuDescendant:"peche-poissons.com (2022) : « Le secteur est surtout pêchant par faible coefficient (40 à 55), une heure avant et après les étales. Au-delà, le courant s'accélère et les lignes ne tiennent plus en place. »",
       description:"Spot atypique : les petits coefficients sont explicitement privilégiés. Pêche fine à l'étale. Le bar est en chasse sans être dérangé par un courant fort.",
       windows:[
         { id:"te1", label:"Étale BM (±1h)", phase:"bm", offsetBefore:-1.0, offsetAfter:1.0, tidePhaseType:"renversement", priority:"prime",
-          note:"Source Sauvin directe. Coef 40-55 idéal. Accès à pied à BM." },
+          note:"Source directe (peche-poissons.com, 2022) : une heure avant et après l'étale, coefficient 40 à 55. Accès à pied à BM." },
         { id:"te2", label:"Étale PM (±1h)", phase:"pm", offsetBefore:-1.0, offsetAfter:1.0, tidePhaseType:"renversement", priority:"prime",
           note:"Idem étale BM, eau pleine, pêche en bordure goémon." },
       ],
-      lifeHack:"Surveiller le coef de très près : si > 85, on reste bloqué sur l'île à marée haute. Prendre la montre. Les micro-leurres souples à la mouche sont l'alternative de Sauvin pour les très gros bars en méfiance.",
+      lifeHack:"Surveiller le coef de très près : si > 85, on reste bloqué sur l'île à marée haute. Prendre la montre. Pour les bars vus en bordure : micro leurres souples à vue, ou mouche avec de petites imitations de crabes (source).",
     },
     lures:[
-      { name:"LS weightless 10-14cm", color:"Natural / Motor Oil / Ayu", weight:"7-12g sans plomb", technique:"L'arme maîtresse selon Sauvin. Promené entre les goémons, récupé lente avec pauses." },
-      { name:"Micro LS à vue", color:"Natural / White", weight:"3-5g sans plomb", technique:"Source Sauvin : traque à vue avec des micro leurres souples. Approche silencieuse obligatoire." },
-      { name:"Surfcasting bout d'île (hors scope leurre)", color:"–", weight:"120-150g", technique:"Non-leurre : source Sauvin, demi-tête de calamar ou sardine entière pour les très gros bars. À n'envisager qu'en connaissant les postes (beaucoup de casse)." },
+      { name:"LS weightless 10-14cm", color:"Natural / Motor Oil / Ayu", weight:"7-12g sans plomb", technique:"Source : « très productive en animant un leurre souple non lesté entre les goémons » (côté rade). Récupération lente avec pauses." },
+      { name:"Micro LS à vue", color:"Natural / White", weight:"3-5g sans plomb", technique:"Source : « le traquer à vue avec de micro leurres souples ». Approche silencieuse." },
+      { name:"Surfcasting bout d'île (hors scope leurre)", color:"–", weight:"120-150g", technique:"Non-leurre, source : « de très gros bars en eschant avec une demi-tête de calamar ou une sardine entière » ; « on y laisse beaucoup de matériel »." },
     ],
     access:"D770 vers Le Faou puis D791 rive droite de l'Aulne direction Landévennec, fléchage Térénez. Parking en bord de grève. Traversée à pied à marée basse (vérifier le coef !). Retour obligatoire avant le flot.",
+    // Sécurité : consignes affichées dans le verdict et l'onglet Accès (« when » = active selon le jour).
+    securite:[{ t:"Coefficient supérieur à 85 : l'île n'est plus accessible en permanence, on peut y rester bloqué à marée haute. Prendre la montre.", s:"peche-poissons.com (julien, 2022) : « accessible à marée basse et en permanence si le coefficient de marée est inférieur à 85 »", when: { coefAbove:85}},
+      { t:"Traversée à pied à marée basse : retour obligatoire avant le flot.", s:"fiche du spot (accès)"}],
   },
 
   // ══════════════════════════════════════════════════════════
@@ -692,6 +713,8 @@ export const SPOTS = [
       { name:"Leurre 10-12cm sardine/bleu", color:"Sardine / Bleu", weight:"20-30g", technique:"Principe peche.com (documenté sur Hague, transposable Goulet) : coloris bleu/sardine pour lieus jaunes en début de saison + bars." },
     ],
     access:"Depuis Logonna : pont Albert-Louppe/Iroise puis D791 presqu'île de Crozon, direction Roscanvel/Pointe des Espagnols. Parking au bout de la pointe. Accès rochers par sentier — repérage conseillé. Niveau expérimenté.",
+    // Sécurité : consignes affichées dans le verdict et l'onglet Accès (« when » = active selon le jour).
+    securite:[{ t:"Ne jamais pêcher en plein courant ; gilet et semelles crantées. Repérage indispensable avant la première session.", s:"fiche du spot (conseil)"}],
   },
 
   // ══════════════════════════════════════════════════════════
@@ -749,6 +772,8 @@ export const SPOTS = [
       { name:"Patchinko 140-165", color:"Ghost / Sardine", weight:"35-55g", technique:"Walk-the-dog sur les plus beaux jours calmes, chasses visibles. Patchinko 165 RB pour les cast longs." },
     ],
     access:"D789 depuis Brest direction Plouzané / phare du Petit Minou. Parking devant le phare (gratuit). Descente par sentier GR34 vers les rochers. Possibilité de pêcher depuis la plage en contrebas.",
+    // Sécurité : consignes affichées dans le verdict et l'onglet Accès (« when » = active selon le jour).
+    securite:[{ t:"Houle de sud-ouest : au-delà de 1,8 m, quitter la pointe pour les petites anses abritées.", s:"fiche du spot (conseil)"}],
   },
 
   // ══════════════════════════════════════════════════════════
@@ -807,5 +832,7 @@ export const SPOTS = [
       { name:"Slug coulant / shad plombé", color:"Pearl / UV / White", weight:"40-60g", technique:"Prospection profonde des basses les plus au large accessibles au cast." },
     ],
     access:"Depuis Logonna : pont Iroise/Albert-Louppe, D791 direction Crozon/Camaret. Parking Pointe de Pen-Hir (monument aux Bretons). Sentier GR34 puis descente technique aux rochers. Niveau pêcheur expérimenté + conditions calmes impératives.",
+    // Sécurité : consignes affichées dans le verdict et l'onglet Accès (« when » = active selon le jour).
+    securite:[{ t:"Jamais seul, gilet obligatoire. Descente technique aux rochers : conditions calmes impératives et bulletin mer d'Iroise vérifié.", s:"fiche du spot (conseil et accès)"}],
   },
 ];

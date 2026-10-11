@@ -2,7 +2,7 @@
 import { SITE, SPOTS } from "SITE_CONFIG";
 import { DIR16, angDist } from "./core.js";
 import { probeStorage } from "./persist.js";
-import { msAtLocal } from "./tide.js";
+import { msAtLocal, parisParts } from "./tide.js";
 
 
 
@@ -129,8 +129,8 @@ export function kmBetween(a, b) {
 }
 /** Date du jour à l'heure locale (toISOString donne la date UTC : fausse entre minuit et 2 h l'été). */
 export function localTodayISO() {
-  const n = new Date();
-  return new Date(n.getTime() - n.getTimezoneOffset() * 6e4).toISOString().slice(0, 10);
+  const p = parisParts(Date.now());
+  return `${p.y}-${String(p.m).padStart(2, "0")}-${String(p.d).padStart(2, "0")}`;
 }
 export function isoAddDays(dateISO, n) {
   const [y, m, d] = dateISO.split("-").map(Number);
@@ -197,7 +197,10 @@ export function wxPoints() {
 export function emptySeries(times) {
   const n = times.length, nul = () => new Array(n).fill(null);
   return { t: times, wind: nul(), dir: nul(), gust: nul(), cloud: nul(), rain: nul(), p: nul(), t2m: nul(), src: nul(),
-           wave: nul(), wdir: nul(), wper: nul(), swell: nul(), sst: nul() };
+           wave: nul(), wdir: nul(), wper: nul(), swell: nul(), sst: nul(),
+           // v7 : vent du second modèle quand le premier a déjà répondu — l'écart
+           // AROME/ECMWF mesure l'incertitude réelle de la prévision.
+           wind2: nul(), dir2: nul() };
 }
 export const FC_MAP = { wind_speed_10m: "wind", wind_direction_10m: "dir", wind_gusts_10m: "gust", cloud_cover: "cloud",
                  precipitation: "rain", pressure_msl: "p", temperature_2m: "t2m" };
@@ -213,7 +216,9 @@ export function fillFrom(ser, loc, map, srcLabel) {
     let any = false;
     for (const [k, dst] of Object.entries(map)) {
       const v = h[k]?.[j];
-      if (ser[dst][i] == null && v != null && Number.isFinite(v)) { ser[dst][i] = dst === "dir" || dst === "wdir" || dst === "cloud" ? Math.round(v) : r1(v); any = true; }
+      if (v == null || !Number.isFinite(v)) continue;
+      if (ser[dst][i] == null) { ser[dst][i] = dst === "dir" || dst === "wdir" || dst === "cloud" ? Math.round(v) : r1(v); any = true; }
+      else if ((dst === "wind" || dst === "dir") && ser[dst + "2"] && ser[dst + "2"][i] == null && srcLabel) ser[dst + "2"][i] = dst === "dir" ? Math.round(v) : r1(v);
     }
     if (any) { filled++; if (srcLabel && ser.src[i] == null) ser.src[i] = srcLabel; }
   });
@@ -243,7 +248,11 @@ export function aggregate(ser, dateISO, h0, h1) {
   const dirDeg = x || y ? ((Math.atan2(x, y) * 180 / Math.PI) + 360) % 360 : null;
   const mean = (xs) => (xs.length ? xs.reduce((s, v) => s + v, 0) / xs.length : null);
   const srcs = [...new Set(ids.map((i) => ser.src[i]).filter(Boolean))];
+  let x2 = 0, y2 = 0, n2 = 0, k2 = 0;
+  if (ser.wind2) ids.forEach((i) => { const v = ser.wind2[i], d = ser.dir2?.[i]; if (v == null) return; k2 += v; n2++;
+    if (d != null) { x2 += v * Math.sin(d * Math.PI / 180); y2 += v * Math.cos(d * Math.PI / 180); } });
   return {
+    kmh2: n2 ? k2 / n2 : null, dirDeg2: x2 || y2 ? ((Math.atan2(x2, y2) * 180 / Math.PI) + 360) % 360 : null,
     kmh: mean(wind), dirDeg, gust: pick("gust").length ? Math.max(...pick("gust")) : null,
     cloud: mean(pick("cloud")), rain: pick("rain").reduce((s, v) => s + v, 0),
     p: mean(pick("p")), wave: mean(pick("wave")), sst: mean(pick("sst")), src: srcs.join("+") || null,
@@ -280,7 +289,21 @@ export function spotWxBetween(live, spot, h0, h1) {
     rain: r1(ag.rain),
     houle: houle != null ? Math.round(houle * 10) / 10 : 0, houleKnown: houle != null, houleSrc,
     model: ag.src, fromSpot: true,
+    // v7 — incertitude réelle : écart entre les deux modèles (au moins ±1 Beaufort, ±1 secteur).
+    spreadF: ag.kmh2 != null ? Math.max(1, Math.min(3, Math.abs((beaufortOf(ag.kmh) ?? 0) - (beaufortOf(ag.kmh2) ?? 0)))) : 1,
+    spreadD: ag.dirDeg2 != null && ag.dirDeg != null ? Math.max(1, Math.min(3, Math.round(angDist(ag.dirDeg, ag.dirDeg2) / 22.5))) : 1,
+    alt: ag.kmh2 != null ? { kmh: Math.round(ag.kmh2), dir: dir16Of(ag.dirDeg2) } : null,
+    rain36: rainBefore(ser, live?.date, h0),
   };
+}
+
+/** Pluie cumulée (mm) sur les 36 h précédant une heure locale (limitée aux données chargées). */
+export function rainBefore(ser, dateISO, h0, span = 36) {
+  if (!ser || !dateISO) return null;
+  const end = msAtLocal(dateISO, h0), start = end - span * 36e5;
+  let s = 0, n = 0;
+  ser.t.forEach((x, i) => { const ms = x * 1000; if (ms > start && ms <= end && ser.rain[i] != null) { s += ser.rain[i]; n++; } });
+  return n >= 6 ? r1(s) : null;
 }
 export function pressureTrendOf(delta) {
   if (!Number.isFinite(delta)) return null;

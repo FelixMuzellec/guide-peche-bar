@@ -41,8 +41,12 @@ export function computeWindows(spot, events) {
 //
 // Le bar est un prédateur à vue opportuniste, nettement plus actif en lumière
 // basse : c'est là que se concentre l'essentiel des touches du bord. Le terme
-// est borné (+1,2 / −0,9) pour rester du même ordre que le vent, sans écraser
-// la marée qui reste le facteur dominant.
+// est borné (+1,2 / −0,9) pour rester du même ordre que le vent. Entre spots,
+// la marée (bande de coefficient, −1,8 à +2) reste le premier facteur. Entre
+// les créneaux d'un même spot — qui sont tous des phases de marée favorables
+// de la fiche — c'est la lumière qui départage : mesuré sur 121 journées,
+// le créneau retenu est à l'aube, au crépuscule ou de nuit dans 99 % des cas.
+// C'est voulu ; l'interface affiche donc aussi le meilleur créneau de plein jour.
 // ═══════════════════════════════════════════════════════════════════
 export function lightTerm(light, spot, sky, houle) {
   if (!light || light.band === "inconnu") return { t: 0, why: "" };
@@ -113,9 +117,9 @@ export function scoreWindow(spot, win, ctx) {
   //    de sa valeur.
   //
   // 3. CONTRADICTION AVEC MA PROPRE DOCUMENTATION en Cotentin : les principes
-  //    généraux citent une plage utile de 70 à 90, au-delà de laquelle certains
-  //    spots du nord deviennent quasi impêchables (dérive > 6 nœuds). Or les
-  //    `coefMax` de 108-110 rendaient le coefficient 100 parfaitement neutre.
+  //    généraux citent la plage 70 à 90 qu'un pêcheur du Cotentin préfère
+  //    (récit de sortie en bateau ; au-delà, « le courant est très fort »). Or
+  //    les `coefMax` de 108-110 rendaient le coefficient 100 parfaitement neutre.
   //
   // La bande se lit [seuil bas, début du plateau, fin du plateau, limite haute].
   const band = spot.coefBand || [30, spot.coefMin ?? 45, spot.coefIdeal ?? 75, spot.coefMax ?? 105];
@@ -125,7 +129,7 @@ export function scoreWindow(spot, win, ctx) {
   // et uniquement là où une source le documente (coefHardMax).
   if (spot.coefHardMax && coeff > spot.coefHardMax)
     return { eligible: false, score: 0, rawScore: null,
-             reason: `Coef ${coeff} > ${spot.coefHardMax} — courant hors de portée du bord ici` };
+             reason: spot.coefHardMaxWhy ? `Coef ${coeff} : ${spot.coefHardMaxWhy}` : `Coef ${coeff} > ${spot.coefHardMax} — courant hors de portée du bord ici` };
 
   const lerpC = (a, b, t) => a + (b - a) * Math.max(0, Math.min(1, t));
   let coefTerm, coefLabel;
@@ -142,8 +146,15 @@ export function scoreWindow(spot, win, ctx) {
   const skyMod = sky === "overcast" ? 0.4 : sky === "clear" ? -0.3 : 0;
   s += skyMod; if (skyMod) parts.push({ k: "Ciel", v: skyMod });
 
-  const wm = windMod(zw.wind_dir, zw.wind_force, spot.exposedAngles, spot.shelteredAngles, houle, spot.houleMax);
+  const regime = regimeOf(spot);
+  const wm = windMod(zw.wind_dir, zw.wind_force, spot.exposedAngles, spot.shelteredAngles, houle, spot.houleMax, regime);
   s += wm; parts.push({ k: `Vent ${zw.wind_dir} F${zw.wind_force}`, v: parseFloat(wm.toFixed(2)) });
+
+  // v7 — Rafales : au-delà de 50 km/h, lancer, tenue de ligne et sécurité se dégradent,
+  // quelle que soit la direction.
+  const gust = zw.gust_kmh;
+  const gustMod = gust != null && gust >= 50 ? -Math.min(2, (gust - 45) / 10) : 0;
+  if (gustMod) { s += gustMod; parts.push({ k: `Rafales ${gust} km/h`, v: parseFloat(gustMod.toFixed(2)) }); }
 
   // Priorité intrinsèque de la fenêtre, telle que documentée sur le spot.
   const prio = win.priority === "prime" ? 0.5 : 0;
@@ -155,17 +166,28 @@ export function scoreWindow(spot, win, ctx) {
   let pressureMod = 0;
   if (pressure && pressureTrend) {
     const strat = pressureStrategy(pressure, pressureTrend);
-    if (strat) { pressureMod = parseFloat((((strat.activity - 5) / 5) * 0.6).toFixed(2)); s += pressureMod; }
+    // v7 — poids divisé par deux : ce modèle vient de blogs de pêche, pas d'études
+    // sur le bar. Il ne doit pas départager deux spots à lui seul.
+    if (strat) { pressureMod = parseFloat((((strat.activity - 5) / 5) * 0.3).toFixed(2)); s += pressureMod; }
   }
-  if (pressureMod) parts.push({ k: "Pression", v: pressureMod });
+  if (pressureMod) parts.push({ k: "Pression (indice faible)", v: pressureMod });
 
   const pres = effectivePresence(sst, sstConf);
-  s *= pres.effective;
+  // v7 — Présence = la plus restrictive entre la température d'eau et la saison
+  // (pas le produit : en hiver, eau froide et départ au frai sont le même fait).
+  const season = seasonPresence(ctx.month, regime);
+  const presence = Math.min(pres.effective, season.factor);
+  s *= presence;
+  if (season.factor < pres.effective && season.factor < 1) parts.push({ k: `Saison : ${season.label}`, v: parseFloat(((season.factor - 1) * 5).toFixed(2)) });
 
   // Recalibrage empirique issu du journal (borné ±18 % — trop peu de données
   // pour autoriser davantage, et le bruit d'une session est considérable).
   const bias = calib?.spotBias?.[spot.id];
-  if (bias != null) s *= Math.max(0.82, Math.min(1.18, bias));
+  if (bias != null) {
+    const b = Math.max(0.82, Math.min(1.18, bias)), before = s;
+    s *= b;
+    if (Math.abs(b - 1) >= 0.01) parts.push({ k: `Journal (${calib.detail?.[spot.id]?.n ?? "?"} sessions)`, v: parseFloat((s - before).toFixed(2)) });
+  }
 
   // v4.1 — COMPRESSION DOUCE AU LIEU D'ÉCRÊTAGE.
   // L'audit a montré que mes propres ajouts (lumière +1,2, fenêtre prime +0,5)
@@ -181,10 +203,11 @@ export function scoreWindow(spot, win, ctx) {
     eligible: true,
     rawScore,
     score: parseFloat(Math.max(0.1, Math.min(9.99, shown)).toFixed(1)),
-    parts, presence: pres, lightTerm: lt, windMod: wm, pressureMod,
-    reason: [wm <= -1.5 ? `⚠ Vent ${zw.wind_dir} F${zw.wind_force}` : wm >= 0.5 ? `✅ Vent ${zw.wind_dir}` : "",
+    parts, presence: { ...pres, effective: presence, season }, lightTerm: lt, windMod: wm, pressureMod, gustMod,
+    reason: [wm <= -1.5 ? `⚠ Vent ${zw.wind_dir} F${zw.wind_force}` : wm >= 0.4 ? `✅ Vent ${zw.wind_dir} F${zw.wind_force}` : "",
+             gustMod <= -0.5 ? `⚠ Rafales ${gust} km/h` : "",
              lt.t >= 0.5 ? `🌅 ${lt.why}` : lt.t <= -0.5 ? `☀ ${lt.why}` : "",
-             pres.effective < 0.85 ? `🌡 ${pres.label}` : ""].filter(Boolean).join(" · "),
+             season.factor < 0.85 && season.factor <= pres.effective ? `🗓 ${season.label}` : pres.effective < 0.85 ? `🌡 ${pres.label}` : ""].filter(Boolean).join(" · "),
   };
 }
 // ═══════════════════════════════════════════════════════════════════
@@ -194,6 +217,9 @@ export function scoreWindow(spot, win, ctx) {
 // visibles (grisés) mais ne sont jamais proposés.
 // ═══════════════════════════════════════════════════════════════════
 export const ALL_HOURS = { from: 0, to: 24 };
+// v8.1 — Par défaut, de 5 h à 23 h : avec 0-24 h, le verdict proposait un créneau
+// de nuit 30 à 46 % des jours. La nuit reste visible et sélectionnable.
+export const DEFAULT_HOURS = { from: 5, to: 23 };
 export function outOfHours(w, hours) {
   if (!hours || (hours.from <= 0 && hours.to >= 24)) return false;
   return overlapH(w.startDecimal, w.endDecimal, hours.from, hours.to) < 0.5;
@@ -204,7 +230,7 @@ export function scoreSpot(spot, ctx) {
   // sur celle du jour. La perturbation d'ensemble s'applique à cette météo-là.
   const wins = (ctx.wins || []).map((w) => {
     let zw = w.zw || ctx.zw;
-    if (ctx.perturb) zw = perturbWx(zw, ctx.perturb.df, ctx.perturb.dd);
+    if (ctx.perturb) zw = perturbWx(zw, ctx.perturb.df * (zw.spreadF || 1), ctx.perturb.dd * (zw.spreadD || 1));
     return { ...w, ...scoreWindow(spot, w, { ...ctx, zw }) };
   });
   // v6.2 : un créneau hors des heures de pêche choisies n'est jamais retenu.
@@ -297,7 +323,35 @@ export function makeTideFor(dateISO, override) {
  * v6.2 — Classement complet d'une journée, en fonction pure : la vue du jour
  * et la vue semaine passent par exactement le même calcul.
  */
-export function scoreDay(dateISO, live, { calib, hours, tideFor } = {}) {
+/** v7 — Orientation confirmée ou corrigée sur place : prime sur la déduction de la fiche. */
+/** Direction de l'eau (vers le large) déduite des secteurs exposés de la fiche : moyenne circulaire. */
+export function waterDirOf(spot) {
+  const a = spot?.exposedAngles || [];
+  if (!a.length) return null;
+  let x = 0, y = 0;
+  for (const d of a) { x += Math.sin(d * Math.PI / 180); y += Math.cos(d * Math.PI / 180); }
+  const deg = ((Math.atan2(x, y) * 180 / Math.PI) + 360) % 360;
+  return Math.round(deg / 22.5) * 22.5 % 360;
+}
+export function applyOrientation(spot, orient) {
+  const o = orient?.[spot.id];
+  if (!o || !Number.isFinite(o.water)) return spot;
+  const w = ((o.water % 360) + 360) % 360, back = (w + 180) % 360;
+  // Orientation de la fiche confirmée sur place : secteurs inchangés, seule la confiance monte.
+  if (w === waterDirOf(spot)) return { ...spot, orientSource: "confirmé" };
+  const ring = (c) => [c, (c + 22.5) % 360, (c + 337.5) % 360];
+  return { ...spot, exposedAngles: ring(w), shelteredAngles: ring(back), orientSource: "terrain" };
+}
+/** Orientations confirmées ou corrigées sur cet appareil. */
+export const ORIENT_KEY = "bar:orient:" + SITE.id;
+export function loadOrient() {
+  try { const v = JSON.parse(localStorage.getItem(ORIENT_KEY) || "{}"); return v && typeof v === "object" ? v : {}; } catch { return {}; }
+}
+export function saveOrient(o) {
+  try { localStorage.setItem(ORIENT_KEY, JSON.stringify(o)); return true; } catch { return false; }
+}
+
+export function scoreDay(dateISO, live, { calib, hours, tideFor, orient } = {}) {
   const tf = tideFor || makeTideFor(dateISO);
   const coeff = tf(SITE.tide.defaultPort).maxCoef || 0;
   const pressure = parseInt(live?.pressure) || 0;
@@ -305,7 +359,9 @@ export function scoreDay(dateISO, live, { calib, hours, tideFor } = {}) {
   const sst = live?.sst != null && !isNaN(parseFloat(live.sst)) ? parseFloat(live.sst) : null;
   const sstConf = live?.sst_confidence || "inconnue";
   const sun = solarTimes(dateISO);
-  return SPOTS.map((s) => {
+  const month = +dateISO.slice(5, 7);
+  const sorted = SPOTS.map((s0) => {
+    const s = applyOrientation(s0, orient);
     const zw = spotWeather(live, s);
     const st = tf(s.tidePort);
     const wins = computeWindows(s, st.events).map((w) => {
@@ -314,9 +370,36 @@ export function scoreDay(dateISO, live, { calib, hours, tideFor } = {}) {
       x.outOfHours = outOfHours(x, hours);
       return x;
     });
-    const r = scoreSpotRobust(s, { coeff, zw, wins, pressure, pressureTrend, sst, sstConf, calib });
+    const r = scoreSpotRobust(s, { coeff, zw, wins, pressure, pressureTrend, sst, sstConf, calib, month });
     return { ...s, ...r, wxReason: r.reason, zw, zoneId: spotZone(s), tideLabel: st.label, tideAccuracy: st.accuracy };
   }).sort(rankCompare);
+  return sorted;
+}
+/** Écart de note sous lequel deux spots sont à égalité (précision du modèle). */
+export const TIE_DELTA = 0.2;
+// v8.1 — Sous la précision du modèle, la note ne départage plus : la vue du jour
+// annonce le groupe à égalité et signale le plus proche. Le classement, lui,
+// reste celui de la note (mesuré : reclasser par la distance rendait le n° 1
+// plus fragile face à l'erreur de prévision, le plus proche étant souvent le
+// dernier du groupe).
+export function tieGroup(sorted) {
+  const el = (sorted || []).filter((s) => s.eligible);
+  if (el.length < 2) return [];
+  const top = el[0].score;
+  const tied = el.filter((s) => top - s.score <= TIE_DELTA + 1e-9);
+  return tied.length < 2 ? [] : tied;
+}
+/** Meilleur créneau de plein jour (hors aube, crépuscule et nuit) parmi les spots praticables. */
+export function bestDaytime(scored) {
+  let best = null;
+  for (const s of scored || []) {
+    if (!s.eligible) continue;
+    for (const w of s.windows || []) {
+      if (!w.eligible || w.outOfHours || w.light?.band !== "jour") continue;
+      if (!best || w.rawScore > best.w.rawScore) best = { s, w };
+    }
+  }
+  return best;
 }
 // v3 — DÉPARTAGE DÉTERMINISTE.
 // Le modèle additif peut produire deux scores rigoureusement égaux quand deux
@@ -364,6 +447,45 @@ export function selectTop3(allScored) {
 // avec des facteurs de mordant, elle les MULTIPLIE. C'est structurellement
 // différent d'un bonus, et c'est le facteur qui manquait au modèle v2.
 // ═══════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════════
+// v7 — RÉGIME DU SPOT ET SAISON DU BAR
+// Régime : roche (pointes, côtes rocheuses), plage (estran sableux battu),
+// abri (rade fermée, ria, havre). Explicite sur le spot si besoin (spot.regime).
+// ═══════════════════════════════════════════════════════════════════
+export function regimeOf(spot) {
+  if (spot?.regime) return spot.regime;
+  if (SITE.zones?.[spot?.zone]?.sea === "rade") return "abri";
+  const ty = String(spot?.type || "").toUpperCase();
+  if (/HAVRE|RIA|ESTUAIRE|EMBOUCHURE/.test(ty)) return "abri";
+  if (/PLAGE|ESTRAN SABLEUX|POINTE SABLEUSE/.test(ty)) return "plage";
+  return "roche";
+}
+
+// Saison : les marquages Ifremer (programme Bargip, 1 220 bars adultes marqués
+// en Manche et Atlantique) montrent que les adultes « se reproduisent en hiver »
+// sur des frayères « généralement situées au large », occupent les zones
+// d'alimentation côtières de mai à novembre, reviennent fidèlement sur leurs
+// sites d'été — et que « certains sont résidents » (sans proportion ni lieu).
+// Au nord du 48e parallèle, la réglementation impose le no-kill du 1er février
+// au 31 mars. Les coefficients ci-dessous traduisent ce cycle ; leurs valeurs
+// exactes sont des hypothèses de modèle.
+export const SEASON = {
+  label: ["départ au frai", "frai au large", "frai au large", "retour", "retour", "présence côtière", "présence côtière",
+          "présence côtière", "présence côtière", "présence côtière", "présence côtière", "départ au frai"],
+  roche: [0.6, 0.5, 0.55, 0.75, 0.95, 1, 1, 1, 1, 1, 0.95, 0.75],
+  plage: [0.6, 0.5, 0.55, 0.75, 0.95, 1, 1, 1, 1, 1, 0.95, 0.75],
+  // Abri : Ifremer dit seulement que « certains sont résidents », sans dire où.
+  // Supposer qu'ils se tiennent plutôt en rade, ria ou havre est une hypothèse
+  // du guide, d'où un écart avec la côte ouverte réduit de moitié en v8.1 (il
+  // décidait seul du verdict d'hiver).
+  abri:  [0.675, 0.575, 0.625, 0.8, 0.975, 1, 1, 1, 1, 1, 0.975, 0.825],
+};
+export function seasonPresence(month, regime = "roche") {
+  if (!month || month < 1 || month > 12) return { factor: 1, label: "saison inconnue", month: null };
+  const tab = SEASON[regime] || SEASON.roche;
+  return { factor: tab[month - 1], label: SEASON.label[month - 1], month, regime };
+}
+
 export function thermalPresence(sst) {
   if (sst == null || isNaN(sst)) return { factor: 1, level: "unknown", label: "Température d'eau inconnue", detail: "Facteur neutralisé faute de donnée — non deviné." };
   if (sst < 7.5)  return { factor: 0.30, level: "absent",  label: "Population côtière au plus bas", detail: "Sous 7,5 °C, l'essentiel des adultes a rejoint les zones de frai du large. Session très aléatoire." };

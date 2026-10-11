@@ -7,4 +7,6 @@ export * from "./model.js";
 export * from "./weather.js";
 export * from "./persist.js";
 export * from "./journal.js";
+export * from "./rules.js";
+export * from "./lures.js";
 export { SITE, SPOTS, GENERAL_PRINCIPLES } from "SITE_CONFIG";

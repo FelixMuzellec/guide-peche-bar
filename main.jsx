@@ -7,7 +7,7 @@ import { SyncBar, syncJournal, getCfg } from "./sync.jsx";
 const SITE_ID = __SITE_ID__;
 
 installStorage();
-document.body.style.paddingBottom = "48px";
+document.body.style.paddingBottom = "56px";
 
 const withTimeout = (p, ms) => Promise.race([p, new Promise((r) => setTimeout(() => r({ state: "error", msg: "GitHub ne répond pas (délai)" }), ms))]);
 

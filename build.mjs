@@ -1,5 +1,7 @@
-// Construit le site statique (GitHub Pages), À PLAT : aucun dossier, pour
-// pouvoir être déposé tel quel depuis un téléphone (« Add file → Upload files »).
+// Construit le site statique à la RACINE du dépôt : GitHub Pages publie la
+// branche main, dossier racine (Settings → Pages → Branch main, / (root)).
+// C'est le seul réglage qui reste juste quand les fichiers sont déposés depuis
+// le téléphone (« Add file → Upload files » ne crée pas de dossier).
 //
 //   index.html                       accueil
 //   logonna.html, pirou.html         les deux applications (JavaScript intégré)
@@ -13,6 +15,12 @@ import path from "node:path";
 import crypto from "node:crypto";
 
 const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), "..");
+export const OUT = root;
+// Feuille de style de Leaflet (carte des spots), intégrée à la page : rien à télécharger.
+const LEAFLET_CSS = fs.readFileSync(path.join(root, "node_modules/leaflet/dist/leaflet.css"), "utf8")
+  .replace(/\/\*[\s\S]*?\*\//g, "").replace(/\s*\n\s*/g, "").replace(/\s{2,}/g, " ");
+const MAP_CSS = ".leaflet-container{font:12px system-ui,sans-serif}.leaflet-tooltip.spot-tip{background:#0b1626;color:#e2e8f0;border:1px solid #334155;"
+  + "box-shadow:none;font-weight:600;padding:2px 6px}.leaflet-tooltip.spot-tip::before{display:none}.leaflet-control-attribution{font-size:11.5px}";
 const SITES = [
   { key: "logonna", config: "src/sites/logonna.config.js", id: "logonna-daoulas", title: "Bar · Logonna-Daoulas", short: "Bar Logonna" },
   { key: "pirou", config: "src/sites/pirou.config.js", id: "pirou-plage", title: "Bar · Pirou Plage", short: "Bar Pirou" },
@@ -37,7 +45,7 @@ for (const s of SITES) {
   // Script intégré dans la page : neutralise les séquences qui fermeraient la balise.
   const js = r.outputFiles[0].text.replace(/<\/(script)/gi, "<\\/$1").replace(/<!--/g, "<\\!--");
   stamp.update(js);
-  fs.writeFileSync(path.join(root, `${s.key}.html`), `<!doctype html>
+  fs.writeFileSync(path.join(OUT, `${s.key}.html`), `<!doctype html>
 <html lang="fr">
 <head>
 <meta charset="utf-8">
@@ -58,7 +66,9 @@ h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-dec
 button,input,optgroup,select,textarea{font-family:inherit;font-size:100%;font-weight:inherit;line-height:inherit;color:inherit;margin:0;padding:0}
 button,select{text-transform:none}button,[type=button]{-webkit-appearance:button;background-color:transparent;background-image:none}button{cursor:pointer}
 blockquote,dl,dd,h1,h2,h3,h4,h5,h6,hr,figure,p,pre{margin:0}ol,ul{list-style:none;margin:0;padding:0}img,svg,video,canvas{display:block;vertical-align:middle}
-html,body{margin:0;background:#020617;color:#e2e8f0}#boot{font:13px system-ui,sans-serif;color:#64748b;padding:40px 16px;text-align:center}@media (pointer:coarse){input,select,textarea{font-size:16px!important}}</style>
+html,body{margin:0;background:#020617;color:#e2e8f0}#boot{font:13px system-ui,sans-serif;color:#64748b;padding:40px 16px;text-align:center}@media (pointer:coarse){input,select,textarea{font-size:16px!important}}
+:focus-visible{outline:2px solid #38bdf8;outline-offset:2px}@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important}}
+${LEAFLET_CSS}${MAP_CSS}</style>
 </head>
 <body>
 <div id="root"><div id="boot">Chargement du guide…</div></div>
@@ -69,17 +79,23 @@ ${js}
 </body>
 </html>
 `);
-  fs.writeFileSync(path.join(root, `${s.key}-manifest.json`), JSON.stringify({
+  fs.writeFileSync(path.join(OUT, `${s.key}-manifest.json`), JSON.stringify({
     id: `./${s.key}.html`, name: s.title, short_name: s.short, lang: "fr", start_url: `./${s.key}.html`, scope: "./",
     display: "standalone", background_color: "#020617", theme_color: "#020617",
     icons: [{ src: `${s.key}.png`, sizes: "512x512", type: "image/png", purpose: "any" }],
   }, null, 2) + "\n");
-  fs.copyFileSync(path.join(root, `assets/${s.key}-512.png`), path.join(root, `${s.key}.png`));
-  console.log(`${s.key}.html : ${(fs.statSync(path.join(root, `${s.key}.html`)).size / 1024).toFixed(0)} Ko`);
+  fs.copyFileSync(path.join(root, `assets/${s.key}-512.png`), path.join(OUT, `${s.key}.png`));
+  console.log(`${s.key}.html : ${(fs.statSync(path.join(OUT, `${s.key}.html`)).size / 1024).toFixed(0)} Ko`);
 }
 const buildId = stamp.digest("hex").slice(0, 12);
-fs.writeFileSync(path.join(root, "sw.js"), fs.readFileSync(path.join(root, "src/sw.js"), "utf8").replace("__BUILD__", buildId));
-fs.copyFileSync(path.join(root, "src/index.html"), path.join(root, "index.html"));
-for (const old of ["logonna", "pirou"]) fs.rmSync(path.join(root, old), { recursive: true, force: true });
-for (const old of ["icon.png", ".nojekyll"]) fs.rmSync(path.join(root, old), { force: true });
+// Le modèle s'appelle sw.template.js : déposé par erreur à la racine, il ne peut
+// plus écraser le sw.js construit (c'est arrivé le 11/10/2026).
+const sw = fs.readFileSync(path.join(root, "src/sw.template.js"), "utf8").replace("__BUILD__", buildId);
+if (sw.includes("__BUILD__")) throw new Error("sw.js : identifiant de version non remplacé");
+fs.writeFileSync(path.join(OUT, "sw.js"), sw);
+fs.copyFileSync(path.join(root, "src/index.html"), path.join(OUT, "index.html"));
+// GitHub Pages sert les fichiers tels quels (pas de traitement Jekyll).
+fs.writeFileSync(path.join(OUT, ".nojekyll"), "");
+// Ancienne sortie (v7–v8 : docs/) supprimée pour qu'il n'en reste qu'une version.
+fs.rmSync(path.join(root, "docs"), { recursive: true, force: true });
 console.log("build", buildId);

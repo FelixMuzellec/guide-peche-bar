@@ -116,18 +116,52 @@ export function conditionsLine(c) {
     c.eau != null ? `eau ${fr(c.eau)} °C` : "", c.lumiere ? c.lumiere.toLowerCase() : "",
   ].filter(Boolean).join(" · ");
 }
+// v7 — RECALIBRAGE PAR RÉTRÉCISSEMENT.
+// Trois sessions ne valent pas trente : le rapport observé/prédit est tiré vers
+// 1 d'autant plus fort qu'il y a peu de sessions, comme si chaque spot partait
+// de 5 sessions « neutres » (estimateur bayésien élémentaire). Le plafond de
+// ±18 % reste une borne de sécurité.
+export const CALIB = { minN: 3, prior: 5, max: 0.18 };
 export function calibrate(entries) {
   const bySpot = {};
   for (const e of entries || []) {
     if (e?.predicted == null || e?.result == null) continue;
     (bySpot[e.spotId] ||= []).push(e);
   }
-  const spotBias = {};
+  const spotBias = {}, detail = {};
   for (const [id, list] of Object.entries(bySpot)) {
-    if (list.length < 3) continue;
+    const n = list.length;
     let obs = 0, pred = 0;
     for (const e of list) { obs += e.result; pred += e.predicted; }
-    if (pred > 0) spotBias[id] = Math.max(0.82, Math.min(1.18, obs / pred));
+    if (n < CALIB.minN || pred <= 0) { detail[id] = { n, raw: null, bias: null }; continue; }
+    const raw = obs / pred;
+    const shrunk = 1 + (raw - 1) * n / (n + CALIB.prior);
+    spotBias[id] = Math.max(1 - CALIB.max, Math.min(1 + CALIB.max, shrunk));
+    detail[id] = { n, raw, bias: spotBias[id] };
   }
-  return { spotBias, n: (entries || []).length, calibrated: Object.keys(spotBias).length };
+  return { spotBias, detail, n: (entries || []).length, calibrated: Object.keys(spotBias).length };
+}
+/** Durée de session en heures (0,25 à 24), ou null. */
+export function sessionDuration(e) {
+  const v = parseFloat(String(e?.duree ?? "").replace(",", "."));
+  return Number.isFinite(v) && v > 0 && v <= 24 ? v : null;
+}
+/**
+ * v7 — Prises par spot. La note ressentie est subjective ; le nombre de bars
+ * par heure de pêche (CPUE) ne l'est pas. Il n'est calculé que sur les
+ * sessions dont la durée est connue.
+ */
+export function catchStats(entries) {
+  const by = {};
+  for (const e of entries || []) {
+    if (!e?.spotId) continue;
+    const s = (by[e.spotId] ||= { sessions: 0, fish: 0, timed: 0, hours: 0, fishTimed: 0, blank: 0 });
+    s.sessions++;
+    const f = Number.isFinite(+e.fish) && e.fish !== "" && e.fish != null ? +e.fish : null;
+    if (f != null) { s.fish += f; if (f === 0) s.blank++; }
+    const h = sessionDuration(e);
+    if (h != null && f != null) { s.timed++; s.hours += h; s.fishTimed += f; }
+  }
+  for (const s of Object.values(by)) s.cpue = s.hours > 0 ? s.fishTimed / s.hours : null;
+  return by;
 }

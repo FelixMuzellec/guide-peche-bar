@@ -47,30 +47,30 @@ export const SITE = {
     ports: {
     granville: { label: "Granville", kind: "secondary", ref: "sthelier", lagH: 2.22,
       hw: { t: [-8.2092, -0.14058], h: [7.1749, 1.13991] }, lw: { t: [-6.6482, 3.05752], h: [6.976, 1.15325] },
-      accuracy: "SHOM ±4,4 min · ±9 cm (mois de contrôle)" },
+      accuracy: "contrôlée contre les tables SHOM : ±4,4 min · ±9 cm (un mois de contrôle)" },
     portbail: { label: "Portbail", kind: "secondary", ref: "dielette", lagH: 2.49,
       hw: { t: [-27.7814, 1.79479], h: [6.4078, 1.17358] }, lw: { t: [-26.297, 3.88113], h: [6.0932, 1.10946] },
-      accuracy: "SHOM ±5,1 min · ±8 cm (mois de contrôle)" },
+      accuracy: "contrôlée contre les tables SHOM : ±5,1 min · ±8 cm (un mois de contrôle)" },
     dielette: { label: "Diélette", kind: "secondary", ref: "dielette", lagH: 2.75,
       hw: { t: [-2.8473, 0.28362], h: [5.474, 1.00639] }, lw: { t: [-2.5548, 0.63108], h: [5.3563, 0.98401] },
-      accuracy: "SHOM ±4,5 min · ±6 cm (mois de contrôle)" },
+      accuracy: "contrôlée contre les tables SHOM : ±4,5 min · ±6 cm (un mois de contrôle)" },
     goury: { label: "Goury", kind: "secondary", ref: "dielette", lagH: 3.07,
       hw: { t: [7.2185, 1.79474], h: [5.3078, 0.66158] }, lw: { t: [-6.6344, 1.79186], h: [5.2246, 0.91397] },
-      accuracy: "SHOM ±6,3 min · ±6 cm (mois de contrôle)" },
+      accuracy: "contrôlée contre les tables SHOM : ±6,3 min · ±6 cm (un mois de contrôle)" },
     pirou: { label: "Pirou (interpolé)", kind: "interp", a: "granville", b: "portbail", w: 0.664,
-      accuracy: "Interpolé Granville/Portbail — heures ±6 min en moyenne, hauteurs approximatives (±0,5 m)" },
+      accuracy: "Interpolé Granville/Portbail. Contrôle d'octobre 2026 contre une table tierce publiée pour Pirou (cabaigne.net) : pleines mers à ±12 min si coef ≥ 60, jusqu'à ±40 min en morte-eau ; basses mers +20 à +35 min en vive-eau (écart en partie dû à la table tierce), jusqu'à ±60 min en morte-eau ; hauteurs ±0,2 m" },
     regneville: { label: "Régnéville (interpolé)", kind: "interp", a: "granville", b: "portbail", w: 0.364,
-      accuracy: "Interpolé Granville/Portbail — heures ±6 min en moyenne, hauteurs approximatives (±0,5 m)" },
+      accuracy: "Interpolé Granville/Portbail, non contrôlé sur place. Même méthode qu'à Pirou, où l'écart mesuré est : pleines mers ±12 min si coef ≥ 60, jusqu'à ±40 min en morte-eau ; basses mers jusqu'à ±60 min ; hauteurs ±0,2 à 0,3 m" },
     agon: { label: "Agon (interpolé)", kind: "interp", a: "granville", b: "portbail", w: 0.364,
-      accuracy: "Interpolé Granville/Portbail — heures ±6 min en moyenne, hauteurs approximatives (±0,5 m)" },
+      accuracy: "Interpolé Granville/Portbail, non contrôlé sur place. Même méthode qu'à Pirou, où l'écart mesuré est : pleines mers ±12 min si coef ≥ 60, jusqu'à ±40 min en morte-eau ; basses mers jusqu'à ±60 min ; hauteurs ±0,2 à 0,3 m" },
     gouville: { label: "Gouville (interpolé)", kind: "interp", a: "granville", b: "portbail", w: 0.496,
-      accuracy: "Interpolé Granville/Portbail — heures ±6 min en moyenne, hauteurs approximatives (±0,5 m)" },
+      accuracy: "Interpolé Granville/Portbail, non contrôlé sur place. Même méthode qu'à Pirou, où l'écart mesuré est : pleines mers ±12 min si coef ≥ 60, jusqu'à ±40 min en morte-eau ; basses mers jusqu'à ±60 min ; hauteurs ±0,2 à 0,3 m" },
     carteret: { label: "Carteret (interpolé)", kind: "interp", a: "portbail", b: "dielette", w: 0.147,
-      accuracy: "Interpolé Portbail/Dielette — heures ±6 min en moyenne, hauteurs approximatives (±0,5 m)" },
+      accuracy: "Interpolé Portbail/Diélette, non contrôlé sur place. Même méthode qu'à Pirou, où l'écart mesuré est : pleines mers ±12 min si coef ≥ 60, jusqu'à ±40 min en morte-eau ; basses mers jusqu'à ±60 min ; hauteurs ±0,2 à 0,3 m" },
     surtainville: { label: "Surtainville (interpolé)", kind: "interp", a: "portbail", b: "dielette", w: 0.528,
-      accuracy: "Interpolé Portbail/Dielette — heures ±6 min en moyenne, hauteurs approximatives (±0,5 m)" },
+      accuracy: "Interpolé Portbail/Diélette, non contrôlé sur place. Même méthode qu'à Pirou, où l'écart mesuré est : pleines mers ±12 min si coef ≥ 60, jusqu'à ±40 min en morte-eau ; basses mers jusqu'à ±60 min ; hauteurs ±0,2 à 0,3 m" },
     sciotot: { label: "Sciotot (interpolé)", kind: "interp", a: "portbail", b: "dielette", w: 0.835,
-      accuracy: "Interpolé Portbail/Dielette — heures ±6 min en moyenne, hauteurs approximatives (±0,5 m)" },
+      accuracy: "Interpolé Portbail/Diélette, non contrôlé sur place. Même méthode qu'à Pirou, où l'écart mesuré est : pleines mers ±12 min si coef ≥ 60, jusqu'à ±40 min en morte-eau ; basses mers jusqu'à ±60 min ; hauteurs ±0,2 à 0,3 m" },
     },
   },
   sstTypical: [8.2, 17.8],
@@ -84,9 +84,9 @@ export const GENERAL_PRINCIPLES = {
   title: "Principes généraux — pêche du bar du bord en Cotentin ouest",
   items: [
     {
-      rule: "Coefficient 70-90 : la fenêtre de référence du Cotentin",
-      source: "despoissonssigrands.com (carnets de pêche Cotentin)",
-      explain: "Au-delà de 90, le courant devient si fort que certains spots du nord de la côte sont quasiment impossibles à pêcher, avec des vitesses de dérive supérieures à 6 nœuds. En dessous de 60, l'estran ne se découvre pas assez pour lire les structures. C'est l'inverse exact de la rade de Brest, où les coefficients modérés dominent.",
+      rule: "Coefficient 70-90 : la préférence d'un pêcheur du Cotentin",
+      source: "despoissonssigrands.com — « Pêche du bar en automne : retour sur une excellente sortie dans le Cotentin » (récit d'une sortie en bateau)",
+      explain: "« J'apprécie un coefficient de marée entre 70 et 90. » Au-dessus, « le courant est très fort » : en bateau, « certains spots du nord de la côte sont quasiment impossibles à pêcher », la dérive dépassant 6 nœuds. C'est une préférence personnelle, tirée d'une sortie en bateau ; faute de source propre à chaque spot du bord, le guide s'en sert comme plage de référence.",
     },
     {
       rule: "Sur les spots à courant violent, pêcher la fin de descendante et le début de montante",
@@ -146,9 +146,9 @@ export const SPOTS = [
         { t:"Des pêcheurs locaux pêchent le bar au leurre souple sur les bouchots et les tables à huîtres de Pirou plage.", s:"Forum Pêche en mer Cotentin — « pêche au bar »" },
       ],
     },
-    coefBand:[35,60,95,115],
-    // Estran sableux : exploitable sur une large plage, les gros coefficients découvrent davantage de structures.
-    coefMin:60, coefIdeal:95, coefMax:115, houleMax:2.0,
+    coefBand:[50,70,90,110],
+    // Plateau 70-90 : préférence d'un pêcheur du Cotentin (despoissonssigrands.com, récit de sortie en bateau), faute de source propre au spot ; les pentes de part et d'autre sont des hypothèses de modèle.
+    coefMin:70, coefIdeal:90, coefMax:110, houleMax:2.0,
     exposedAngles:[247.5,270,292.5], shelteredAngles:[67.5,90,112.5],
     weatherNote:"Plein ouest, aucune protection. Le vent d'O/SO monte directement sur l'estran ; le vent d'E aplatit et clarifie.",
     sources:[
@@ -184,6 +184,8 @@ export const SPOTS = [
       { name:"Stickbait 110-140 mm", color:"Ghost / Iwashi / blanc en basse lumière", weight:"14-25 g", technique:"Walking the dog au crépuscule sur le flot, le long des épis. Patchinko 125 ou Asturie 110 en référence perso." },
     ],
     access:"Accès direct depuis Pirou Plage, parkings en front de mer. Aucune difficulté.",
+    // Sécurité : consignes affichées dans le verdict et l'onglet Accès (« when » = active selon le jour).
+    securite:[{ t:"Estran plat à fort marnage : le flot gagne vite et peut passer par les bâches et les chenaux. Repérer sa ligne de retour avant de s'avancer.", s:"prudence générale (déduit)"}],
   },
 
   // ══════════════════════════════════════════════════════════
@@ -209,9 +211,9 @@ export const SPOTS = [
         { t:"Le havre de la Sienne se traverse à pied à marée basse seulement, accompagné : « trop dangereux seul ». Il est séparé de la mer par l'espace naturel classé de la pointe d'Agon.", s:"Attitude Manche via Cirkwi — Le havre de Sienne" },
       ],
     },
-    coefBand:[35,60,95,115],
-    // Havre : la vidange gagne à avoir du marnage.
-    coefMin:60, coefIdeal:95, coefMax:115, houleMax:1.5,
+    coefBand:[50,70,90,110],
+    // Plateau 70-90 : préférence d'un pêcheur du Cotentin (despoissonssigrands.com, récit de sortie en bateau), faute de source propre au spot ; les pentes de part et d'autre sont des hypothèses de modèle.
+    coefMin:70, coefIdeal:90, coefMax:110, houleMax:1.5,
     exposedAngles:[247.5,270], shelteredAngles:[45,67.5,90,112.5],
     weatherNote:"Havre partiellement abrité par le cordon dunaire. Reste ouvert au secteur ouest à pleine mer.",
     sources:[
@@ -247,6 +249,9 @@ export const SPOTS = [
       { name:"Minnow à bavette 110-130 mm", color:"Dos sombre en eau teintée", weight:"14-20 g", technique:"Récupération lente en travers du flux sortant, quand l'eau est chargée et que le souple passe inaperçu." },
     ],
     access:"Parkings du havre de Régnéville. Marche sur banc de sable jusqu'aux postes. Bottes ou waders selon le poste.",
+    // Sécurité : consignes affichées dans le verdict et l'onglet Accès (« when » = active selon le jour).
+    securite:[{ t:"Ne jamais traverser le havre à pied seul : traversée à marée basse et accompagnée seulement (« trop dangereux seul »).", s:"Attitude Manche via Cirkwi — Le havre de Sienne"},
+      { t:"Ne jamais traverser le chenal, même à basse mer apparente : les bancs sont mobiles et le flot reprend par l'arrière. Repérer un point de repli visible.", s:"fiche du spot (conseil)"}],
   },
 
   // ══════════════════════════════════════════════════════════
@@ -273,9 +278,9 @@ export const SPOTS = [
         { t:"On y trouve des herbiers de zostères (Zostera marina et noltei), des récifs d'hermelles temporaires et des platiers à algues rouges ; granulométrie de la vase aux blocs.", s:"INPN — ZNIEFF 25M000020" },
       ],
     },
-    coefBand:[35,60,95,115],
-    // Parcs et estran : large plage utile.
-    coefMin:60, coefIdeal:95, coefMax:115, houleMax:1.8,
+    coefBand:[50,70,90,110],
+    // Plateau 70-90 : préférence d'un pêcheur du Cotentin (despoissonssigrands.com, récit de sortie en bateau), faute de source propre au spot ; les pentes de part et d'autre sont des hypothèses de modèle.
+    coefMin:70, coefIdeal:90, coefMax:110, houleMax:1.8,
     exposedAngles:[247.5,270,292.5], shelteredAngles:[67.5,90],
     weatherNote:"Exposition ouest franche. Les parcs cassent partiellement le clapot par vent modéré.",
     sources:[
@@ -311,6 +316,8 @@ export const SPOTS = [
       { name:"Stickbait 120-140 mm", color:"Ghost / Iwashi", weight:"16-25 g", technique:"Surface au crépuscule sur les parcs recouverts, quand des chasses marquent." },
     ],
     access:"Nombreux accès plage à Gouville, parkings des cabines. Marche variable selon le coefficient.",
+    // Sécurité : consignes affichées dans le verdict et l'onglet Accès (« when » = active selon le jour).
+    securite:[{ t:"Le flot remonte entre les tables plus vite qu'il n'y paraît : garder une ligne de retraite dégagée. Parcs coupants : semelles épaisses.", s:"fiche du spot (conseil)"}],
   },
 
   // ══════════════════════════════════════════════════════════
@@ -337,9 +344,9 @@ export const SPOTS = [
         { t:"Le havre de la Sienne se traverse à pied à marée basse seulement, accompagné : « trop dangereux seul ».", s:"Attitude Manche via Cirkwi — Le havre de Sienne" },
       ],
     },
-    coefBand:[40,65,95,115],
-    // Pointe sableuse à veine : demande du débit.
-    coefMin:65, coefIdeal:95, coefMax:115, houleMax:1.7,
+    coefBand:[50,70,90,110],
+    // Plateau 70-90 : préférence d'un pêcheur du Cotentin (despoissonssigrands.com, récit de sortie en bateau), faute de source propre au spot ; les pentes de part et d'autre sont des hypothèses de modèle.
+    coefMin:70, coefIdeal:90, coefMax:110, houleMax:1.7,
     exposedAngles:[247.5,270,292.5], shelteredAngles:[90,112.5],
     weatherNote:"Pointe très exposée à l'ouest, sans aucun abri. Le vent y est toujours plus fort que sur la plage voisine.",
     sources:[
@@ -376,6 +383,10 @@ export const SPOTS = [
       { name:"Stickbait 125-140 mm", color:"Ghost / blanc en basse lumière", weight:"16-25 g", technique:"Surface au crépuscule quand la mer est maniable." },
     ],
     access:"Parking d'Agon-Coutainville puis longue marche sur la pointe. Compter le trajet retour dans le calcul de marée.",
+    // Sécurité : consignes affichées dans le verdict et l'onglet Accès (« when » = active selon le jour).
+    securite:[{ t:"Marée montante sur les bancs : attention à ne pas se laisser entourer.", s:"Latitude Manche, guide de pêche", when: { phase:"montant"}},
+      { t:"La pointe s'isole vite et le flot la contourne par l'arrière.", s:"fiche du spot"},
+      { t:"Ne jamais traverser le havre à pied seul (« trop dangereux seul »).", s:"Attitude Manche via Cirkwi — Le havre de Sienne"}],
   },
 
   // ══════════════════════════════════════════════════════════
@@ -401,9 +412,9 @@ export const SPOTS = [
         { t:"À Portbail, le platier rocheux porte moules, coquilles Saint-Jacques et étrilles.", s:"CPIE du Cotentin — où pêcher" },
       ],
     },
-    coefBand:[35,60,92,112],
-    // Havre étroit : le flux se concentre vite.
-    coefMin:60, coefIdeal:92, coefMax:112, houleMax:1.6,
+    coefBand:[50,70,90,108],
+    // Plateau 70-90 : préférence d'un pêcheur du Cotentin (despoissonssigrands.com, récit de sortie en bateau), faute de source propre au spot ; les pentes de part et d'autre sont des hypothèses de modèle.
+    coefMin:70, coefIdeal:90, coefMax:108, houleMax:1.6,
     exposedAngles:[247.5,270], shelteredAngles:[67.5,90,112.5],
     weatherNote:"Havre abrité côté interne, sortie de chenal exposée à l'ouest.",
     sources:[
@@ -437,6 +448,8 @@ export const SPOTS = [
       { name:"Minnow à bavette", color:"Naturel / dos sombre", weight:"14-20 g", technique:"Sur le platier recouvert, récupération lente." },
     ],
     access:"Parkings du havre et du bourg. Berges praticables, platier accessible à basse mer.",
+    // Sécurité : consignes affichées dans le verdict et l'onglet Accès (« when » = active selon le jour).
+    securite:[{ t:"Platier accessible à basse mer seulement : surveiller la montée depuis le platier.", s:"fiche du spot (accès)"}],
   },
 
   // ══════════════════════════════════════════════════════════
@@ -462,21 +475,24 @@ export const SPOTS = [
         { t:"De Carteret à Urville-Nacqueville « alternent baies sableuses et caps rocheux », avec des platiers rocheux au pied des caps.", s:"CPIE du Cotentin — où pêcher" },
       ],
     },
-    coefBand:[40,65,88,100], coefHardMax:108,
-    // Cap du nord : source Cotentin — au-delà de 90 la dérive devient excessive sur ce secteur.
-    coefMin:65, coefIdeal:88, coefMax:100, houleMax:2.0,
+    coefBand:[50,70,88,100], coefHardMax:108,
+    // Plateau 70-90 : préférence d'un pêcheur du Cotentin (despoissonssigrands.com, sortie en bateau). Le courant « très fort »
+    // au-delà de 90 et la dérive de plus de 6 nœuds (en bateau) visent « certains spots du nord de la côte » : l'appliquer
+    // à Carteret est une extrapolation, signalée comme telle.
+    courantFort: { above: 90, t: "au cap, le courant s'accélère fortement (fiche) ; au-delà de 90, « le courant est très fort » selon un pêcheur du Cotentin, qui décrit en bateau une dérive de plus de 6 nœuds sur des spots du nord (extrapolé à Carteret)." },
+    coefMin:70, coefIdeal:88, coefMax:100, houleMax:2.0,
     exposedAngles:[247.5,270,292.5,315], shelteredAngles:[90,112.5],
     weatherNote:"Cap exposé de tous les secteurs ouest. Houle réfléchie sur la roche par mer formée.",
     sources:[
       "cpiecotentin.com — 'Plus au nord, de Carteret à Urville-Nacqueville, alternent baies sableuses et caps rocheux au pied desquels se trouvent des platiers rocheux'",
       "peche.com — Trouver les bons spots pour pêcher le bar : les plateaux rocheux",
-      "despoissonssigrands.com — au-delà du coefficient 90, certains spots du nord de la côte deviennent quasiment impêchables (dérive > 6 nœuds)",
+      "despoissonssigrands.com — au-delà du coefficient 90, « le courant est très fort » ; en bateau, « certains spots du nord de la côte sont quasiment impossibles à pêcher » (dérive supérieure à 6 nœuds) — https://despoissonssigrands.com/lescarnetsdepeche/peche-du-bar-en-automne-retour-sur-une-excellente-sortie-dans-le-cotentin",
     ],
     topology:{
       fond:{ text:"Roche franche, platier rocheux au pied du cap, tombant vers le large. Rupture nette dans une côte majoritairement sableuse.", confidence:"verified" },
       structure:{ text:"Cap marquant l'entrée de la baie de Carteret. Le courant s'accélère fortement à son extrémité et crée des remous exploitables en aval.", confidence:"inference" },
       exposition:{ text:"Très exposé au secteur ouest. Le vent d'est offre le seul abri réel.", confidence:"inference" },
-      courant:{ text:"Fort, en augmentation rapide avec le coefficient. La source Cotentin avertit que les spots du nord deviennent impêchables au-delà de 90.", confidence:"verified" },
+      courant:{ text:"Fort, en augmentation rapide avec le coefficient. Au-delà de 90, une source Cotentin (récit en bateau) décrit des spots du nord quasiment impossibles à pêcher ; Carteret n'y est pas nommé.", confidence:"inference" },
       bars:{ text:"Profondeur, oxygénation et courant permanent : configuration de plateau rocheux favorable aux gabarits supérieurs à la moyenne du secteur sableux voisin.", confidence:"inference" },
     },
     tidalRules:{
@@ -499,6 +515,9 @@ export const SPOTS = [
       { name:"Souple lourd sur tombant", color:"Naturel / blanc", weight:"18-28 g", technique:"Prospection du pied de roche quand le poisson ne monte pas." },
     ],
     access:"Sentier des douaniers depuis Carteret, descentes rocheuses techniques. Chaussures de rando obligatoires.",
+    // Sécurité : consignes affichées dans le verdict et l'onglet Accès (« when » = active selon le jour).
+    securite:[{ t:"Coefficient au-delà de 90 : « le courant est très fort » ; en bateau, certains spots du nord de la côte deviennent « quasiment impossibles à pêcher » (dérive de plus de 6 nœuds). Carteret n'est pas nommé, mais le cap est exposé : rester haut et prudent.", s:"despoissonssigrands.com (sortie en bateau, spots du nord) — appliqué à Carteret par extrapolation", when: { coefAbove:90}},
+      { t:"Ne pas descendre bas sur la roche : la houle réfléchie sur le cap arrive par séries irrégulières. Chaussures de randonnée, descentes techniques.", s:"fiche du spot (conseil et accès)"}],
   },
 
   // ══════════════════════════════════════════════════════════
@@ -520,9 +539,9 @@ export const SPOTS = [
       confidence:"inference",
       source:"Déduit de la description du fond de ce spot",
     },
-    coefBand:[35,60,88,105], coefHardMax:112,
-    // Marnage maximal de la côte : les fenêtres se resserrent fortement en vive-eau.
-    coefMin:60, coefIdeal:88, coefMax:105, houleMax:1.8,
+    coefBand:[50,70,88,105], coefHardMax:112,
+    // Plateau 70-90 : préférence d'un pêcheur du Cotentin (despoissonssigrands.com, récit de sortie en bateau), faute de source propre au spot ; les pentes de part et d'autre sont des hypothèses de modèle. Fin de plateau à 88 : marnage maximal de la côte, les fenêtres se resserrent en vive-eau (hypothèse).
+    coefMin:70, coefIdeal:88, coefMax:105, houleMax:1.8,
     exposedAngles:[247.5,270,292.5], shelteredAngles:[67.5,90,112.5],
     weatherNote:"Promontoire exposé mais offrant des postes sur plusieurs orientations : on trouve presque toujours un côté abrité.",
     sources:[
@@ -557,6 +576,8 @@ export const SPOTS = [
       { name:"Stickbait 140 mm", color:"Ghost / Iwashi", weight:"25-30 g", technique:"Sur les platiers à l'étale de basse mer, quand la mer est plate." },
     ],
     access:"Accès urbain, plusieurs postes autour de la pointe et du port. Stationnement facile.",
+    // Sécurité : consignes affichées dans le verdict et l'onglet Accès (« when » = active selon le jour).
+    securite:[{ t:"Marnage pouvant dépasser 12 m en vive-eau : un poste accessible à basse mer disparaît en une heure. Photographier son poste et noter l'heure à l'arrivée.", s:"fiche du spot (conseil)"}],
   },
 
   // ══════════════════════════════════════════════════════════
@@ -583,9 +604,9 @@ export const SPOTS = [
         { t:"Réglementation locale : « le mode de pêche à l'hameçon (paillots…), lors de la période autorisée (16/09 au 14/06) est strictement interdit au droit de la cale jusqu'à la barre rocheuse au niveau de la Roquette » ; pêche interdite dans la zone de baignade surveillée. Vérifier en mairie si le lancer est concerné.", s:"Normandie Tourisme — Plage de Sciotot" },
       ],
     },
-    coefBand:[35,60,92,112],
-    // Anse entre caps : courant modéré, large plage utile.
-    coefMin:60, coefIdeal:92, coefMax:112, houleMax:2.0,
+    coefBand:[50,70,90,108],
+    // Plateau 70-90 : préférence d'un pêcheur du Cotentin (despoissonssigrands.com, récit de sortie en bateau), faute de source propre au spot ; les pentes de part et d'autre sont des hypothèses de modèle.
+    coefMin:70, coefIdeal:90, coefMax:108, houleMax:2.0,
     exposedAngles:[247.5,270,292.5], shelteredAngles:[67.5,90],
     weatherNote:"Anse encadrée de caps : la houle d'ouest y entre mais s'y amortit partiellement.",
     sources:[
@@ -620,6 +641,8 @@ export const SPOTS = [
       { name:"Stickbait 125-140 mm", color:"Ghost / blanc en basse lumière", weight:"18-25 g", technique:"Surface sur l'anse quand la mer est formée sans être démontée." },
     ],
     access:"Parking de la plage de Sciotot, accès direct. Caps accessibles à pied par l'estran à marée descendante. Réglementation locale de la pêche à l'hameçon entre la cale et la barre rocheuse de la Roquette (voir fiche terrain) ; pêche interdite dans la zone de baignade surveillée l'été.",
+    // Sécurité : consignes affichées dans le verdict et l'onglet Accès (« when » = active selon le jour).
+    securite:[{ t:"Zones réglementées autour du site industriel voisin, tracé susceptible d'évoluer ; pêche interdite dans la zone de baignade surveillée l'été.", s:"fiche du spot (accès) · Normandie Tourisme"}],
   },
 
   // ══════════════════════════════════════════════════════════
@@ -645,9 +668,9 @@ export const SPOTS = [
         { t:"Site Natura 2000 « Banc et récifs de Surtainville » : 6 331 ha de bancs de sable et 281 ha de récifs ; leur position par rapport au bord n'est pas précisée.", s:"INPN — Natura 2000 FR2502018" },
       ],
     },
-    coefBand:[35,60,95,115],
-    // Plage exposée : les fosses se lisent mieux aux forts coefficients.
-    coefMin:60, coefIdeal:95, coefMax:115, houleMax:2.2,
+    coefBand:[50,70,90,110],
+    // Plateau 70-90 : préférence d'un pêcheur du Cotentin (despoissonssigrands.com, récit de sortie en bateau), faute de source propre au spot ; les pentes de part et d'autre sont des hypothèses de modèle.
+    coefMin:70, coefIdeal:90, coefMax:110, houleMax:2.2,
     exposedAngles:[247.5,270,292.5], shelteredAngles:[67.5,90],
     weatherNote:"Plage franchement exposée à l'ouest, aucune protection sur des kilomètres.",
     sources:[
@@ -682,6 +705,8 @@ export const SPOTS = [
       { name:"Stickbait 125 mm", color:"Ghost / blanc", weight:"16-22 g", technique:"Au ras du bord au petit jour, quand la mer n'est pas trop formée." },
     ],
     access:"Parkings de plage à Surtainville et au Rozel, accès direct par les dunes.",
+    // Sécurité : consignes affichées dans le verdict et l'onglet Accès (« when » = active selon le jour).
+    securite:[{ t:"Estran plat : le flot gagne vite. Repérer sa ligne de retour avant de s'avancer vers les fosses.", s:"prudence générale (déduit)"}],
   },
 
   // ══════════════════════════════════════════════════════════
@@ -708,22 +733,25 @@ export const SPOTS = [
         { t:"Les bars de chasse sont souvent calibrés ; il est « rare de faire de gros poissons lors des chasses ».", s:"peche.com" },
       ],
     },
-    coefBand:[35,60,85,95], coefHardMax:100,
-    // Raz Blanchard — source explicite : au-delà de 90 quasiment impêchable, dérive supérieure à 6 nœuds.
-    coefMin:60, coefIdeal:85, coefMax:95, houleMax:1.8,
+    coefBand:[50,70,90,95], coefHardMax:90,
+    // Raz Blanchard. Plateau 70-90 : préférence d'un pêcheur du Cotentin (despoissonssigrands.com) ; au-delà, « le courant
+    // est très fort » et, en bateau, la dérive dépasse 6 nœuds sur les spots du nord. Du bord, aucune source ne fixe de
+    // limite : ne plus proposer le spot au-delà de 90 est un choix de prudence du guide.
+    coefHardMaxWhy: "au-delà de 90, « le courant est très fort » au Raz Blanchard (despoissonssigrands.com) : spot non proposé, par prudence.",
+    coefMin:70, coefIdeal:90, coefMax:95, houleMax:1.8,
     exposedAngles:[270,292.5,315,0], shelteredAngles:[157.5,180],
     weatherNote:"Point le plus exposé de la côte. Mer croisée fréquente, vent renforcé par l'effet de cap.",
     sources:[
       "peche.com — Sortie de pêche estivale à la recherche des bars du Cotentin",
       "peche.com — Pêche du bar du bord dans le Cotentin : 'Le mythique Cap de la Hague est connu pour abriter l'un des courants les plus puissants au monde avec le fameux Raz Blanchard. Cette zone très mouvementée est un excellent spot pour la pêche du bar'",
-      "despoissonssigrands.com — 'Le phare de Goury marque l'entrée du Raz Blanchard. Ce violent courant est un excellent spot pour la pêche du bar' ; coefficient 70-90 privilégié, au-delà la dérive dépasse 6 nœuds",
+      "despoissonssigrands.com — « Le phare de Goury marque l'entrée du Raz Blanchard. Ce violent courant est un excellent spot pour la pêche du bar » ; coefficient préféré « entre 70 et 90 » ; au-delà, en bateau, dérive « supérieure à 6 nœuds » sur des spots du nord — https://despoissonssigrands.com/lescarnetsdepeche/peche-du-bar-en-automne-retour-sur-une-excellente-sortie-dans-le-cotentin",
       "peche.com — technique : privilégier la fin de la descendante et le début de la remontante, jusqu'à 2h-2h30 après le basculement",
     ],
     topology:{
       fond:{ text:"Roche franche, estran rocheux, tombants profonds. Fonds extrêmement brassés par le courant du raz.", confidence:"verified" },
       structure:{ text:"Le phare de Goury marque l'entrée du Raz Blanchard, l'un des courants les plus puissants au monde. Remous permanents, veines et contre-courants sur toute la zone.", confidence:"verified" },
       exposition:{ text:"Exposé du sud-ouest au nord. Aucun abri réel. Mer croisée quand le vent contrarie le courant.", confidence:"inference" },
-      courant:{ text:"Extrême. La source Cotentin est explicite : au plus fort du courant il est compliqué de pêcher correctement, et au-delà du coefficient 90 la dérive dépasse 6 nœuds.", confidence:"verified" },
+      courant:{ text:"Extrême. peche.com (bord, Cotentin) : au plus fort du courant, il est compliqué de pêcher correctement. despoissonssigrands.com (en bateau) : au-delà du coefficient 90, la dérive dépasse 6 nœuds sur des spots du nord.", confidence:"verified" },
       bars:{ text:"Zone qualifiée d'excellent spot pour la pêche du bar par deux sources indépendantes. Oxygénation et biomasse maximales, poissons de passage, gabarits supérieurs. Mais fenêtres praticables étroites.", confidence:"verified" },
     },
     tidalRules:{
@@ -738,7 +766,7 @@ export const SPOTS = [
         { id:"gy3", label:"Coefficient modéré uniquement", phase:"pm", offsetBefore:1.0, offsetAfter:2.5, tidePhaseType:"descendant", priority:"bon",
           note:"À réserver aux coefficients sous 80 : au-delà, la dérive rend la pêche du bord illusoire sur cette phase." },
       ],
-      lifeHack:"Le coefficient est ici un facteur de sécurité autant que de pêche. Au-delà de 90, la source Cotentin indique que les spots du nord deviennent quasiment impêchables — ce n'est pas une question de confort.",
+      lifeHack:"Le coefficient est ici un facteur de sécurité autant que de pêche. Au-delà de 90, « le courant est très fort » ; en bateau, des spots du nord deviennent quasiment impossibles à pêcher. Du bord, le guide ne propose plus le spot, par prudence.",
     },
     lures:[
       { name:"Black Minnow 120 / 140", color:"Kaki / Ayu", weight:"tête 12-20 g", technique:"Référence explicite peche.com pour le bord en Cotentin. Le 140 quand les sardines sont présentes, monté sur tête de 20 g en linéaire." },
@@ -746,6 +774,9 @@ export const SPOTS = [
       { name:"Stickbait 140-165 mm", color:"Ghost / Iwashi", weight:"25-40 g", technique:"Dans les remous à l'étale, animation ample. Fenêtre courte." },
     ],
     access:"Port de Goury à Auderville, estran rocheux alentour. Descente engagée, roche glissante.",
+    // Sécurité : consignes affichées dans le verdict et l'onglet Accès (« when » = active selon le jour).
+    securite:[{ t:"Coefficient au-delà de 90 : « le courant est très fort » ; en bateau, la dérive dépasse 6 nœuds sur des spots du nord. Du bord, au pied du Raz Blanchard : spot non proposé, par prudence.", s:"despoissonssigrands.com (sortie en bateau) · choix de prudence du guide", when: { coefAbove:90}},
+      { t:"Descente engagée, roche glissante : jamais seul, gilet.", s:"fiche du spot (accès)"}],
   },
 
 ];

@@ -1,5 +1,6 @@
 // Utilitaires partagés : vent, soleil, lumière, heures.
 import { SITE } from "SITE_CONFIG";
+import { msAtLocal } from "./tide.js";
 
 // ═══════════════════════════════════════════════════════════════════
 // WIND / DIRECTION UTILS
@@ -7,14 +8,39 @@ import { SITE } from "SITE_CONFIG";
 export const DIR16 = ["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSO","SO","OSO","O","ONO","NO","NNO"];
 export const toAngle = d => { const i = DIR16.indexOf((d||"").toUpperCase()); return i >= 0 ? i * 22.5 : -1; };
 export const angDist = (a, b) => { const d = Math.abs(((a - b) + 360) % 360); return d > 180 ? 360 - d : d; };
-export function windMod(windDir, windForce, exposedAngles, shelteredAngles, houle, houleMax) {
+// v7 — VENT DE FACE : EFFET NON MONOTONE, SELON LE RÉGIME DU SPOT
+// Jusqu'en v6, chaque Beaufort de vent de face retirait 0,65 point : −2 dès
+// force 3. C'est contraire à la pratique du bar : « le vent et la houle sont des
+// alliés de choix pour le pêcheur de bars » et « les roches émergentes où
+// l'écume se forme tiennent généralement des poissons en activité », mais
+// « lorsque la mer est agitée, il est difficile et risqué de s'approcher »
+// (peche.com, « Les bons spots à bar : misez sur les roches émergentes et
+// l'écume »). D'où une courbe : léger clapot favorable, mer forte pénalisée.
+// Les valeurs sont des hypothèses de modèle, à recaler avec le journal.
+//   roche : pointes et côtes rocheuses (écume, ressac)
+//   plage : estrans sableux battus (rouleaux)
+//   abri  : rade fermée, ria, havre (le clapot n'y apporte presque rien)
+export const ONSHORE = {
+  //      F0    F1    F2    F3    F4    F5    F6    F7
+  roche: [0,   0.1,  0.3,  0.5,  0.3, -0.4, -1.4, -2.4],
+  plage: [0,   0.0,  0.2,  0.4,  0.1, -0.6, -1.6, -2.6],
+  abri:  [0,   0.0,  0.1,  0.0, -0.5, -1.2, -2.0, -2.8],
+};
+export function onshoreEffect(force, regime = "roche") {
+  const tab = ONSHORE[regime] || ONSHORE.roche;
+  const f = Math.max(0, Math.round(force || 0));
+  return f < tab.length ? tab[f] : tab[tab.length - 1] - (f - (tab.length - 1)) * 0.7;
+}
+
+export function windMod(windDir, windForce, exposedAngles, shelteredAngles, houle, houleMax, regime = "roche") {
   const ang = toAngle(windDir);
   let mod = 0;
   if (ang >= 0 && windForce > 0) {
     const expDist = Math.min(...exposedAngles.map(a => angDist(ang, a)));
     const sheltDist = shelteredAngles.length ? Math.min(...shelteredAngles.map(a => angDist(ang, a))) : 180;
-    if (expDist < 45)  mod -= (1 - expDist / 45) * windForce * 0.65;
-    if (sheltDist < 45) mod += (1 - sheltDist / 45) * 0.5;
+    if (expDist < 45) mod += (1 - expDist / 45) * onshoreEffect(windForce, regime);
+    // Vent de terre : eau calme, lancer facile — léger plus jusqu'à force 4 seulement.
+    if (sheltDist < 45 && windForce <= 4) mod += (1 - sheltDist / 45) * 0.3;
     // v6 — la météo n'est plus plafonnée à F6 : un coup de vent reste un coup
     // de vent même sous le vent d'une pointe (lancer, sécurité, ligne).
     if (windForce >= 7) mod -= (windForce - 6) * 0.7;
@@ -60,8 +86,9 @@ export function sunEventUTC(y, m, d, lat, lon, zenith, rising) {
 /** Éphéméride locale (heures décimales) pour une date ISO et le site. */
 export function solarTimes(dateISO) {
   const [y, m, d] = dateISO.split("-").map(Number);
-  // Décalage local réel à cette date : gère automatiquement heure d'été/hiver.
-  const offH = -new Date(y, m - 1, d, 12, 0, 0).getTimezoneOffset() / 60;
+  // v7 — Décalage de Paris à cette date (heure d'été/hiver), et non celui du
+  // téléphone : un appareil réglé sur un autre fuseau faussait lever et coucher.
+  const offH = Math.round((Date.UTC(y, m - 1, d, 12) - msAtLocal(dateISO, 12)) / 36e5 * 4) / 4;
   const conv = (u) => (u == null ? null : ((u + offH) % 24 + 24) % 24);
   return {
     dawn:    conv(sunEventUTC(y, m, d, SITE.lat, SITE.lon, 96, true)),

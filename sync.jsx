@@ -132,9 +132,9 @@ export function SyncBar({ siteId, initial }) {
 
   const inp = { width: "100%", boxSizing: "border-box", padding: "8px 9px", borderRadius: 6, border: `1px solid ${C.line}`, background: "#0b1220", color: "#e2e8f0", fontSize: 13, fontFamily: "monospace", marginTop: 3 };
   return (
-    <div style={{ position: "fixed", left: 0, right: 0, bottom: 0, zIndex: 1000, background: C.bg, borderTop: `1px solid ${C.line}`, fontFamily: "system-ui,sans-serif", paddingBottom: "env(safe-area-inset-bottom)" }}>
+    <footer aria-label="Sauvegarde du journal" style={{ position: "fixed", left: 0, right: 0, bottom: 0, zIndex: 1000, background: C.bg, borderTop: `1px solid ${C.line}`, fontFamily: "system-ui,sans-serif", paddingBottom: "env(safe-area-inset-bottom)" }}>
       {open && (
-        <div style={{ maxWidth: 560, margin: "0 auto", padding: "12px 16px 4px", color: C.txt, fontSize: 12, lineHeight: 1.55, maxHeight: "70vh", overflowY: "auto" }}>
+        <div style={{ maxWidth: 560, margin: "0 auto", padding: "12px 16px 4px", color: C.txt, fontSize: 13, lineHeight: 1.55, maxHeight: "70vh", overflowY: "auto" }}>
           <div style={{ color: "#e2e8f0", fontWeight: 700, marginBottom: 6 }}>Sauvegarde du journal sur GitHub</div>
           <p style={{ margin: "0 0 8px" }}>
             Le journal est gardé sur cet appareil. Pour ne plus jamais le perdre et le retrouver sur tous tes appareils,
@@ -150,23 +150,23 @@ export function SyncBar({ siteId, initial }) {
           <label style={{ display: "block", marginTop: 6 }}>Dépôt<input style={inp} value={form.repo} onChange={(e) => setForm({ ...form, repo: e.target.value })} autoCapitalize="off" autoCorrect="off" /></label>
           <label style={{ display: "block", marginTop: 6 }}>Jeton<input style={inp} type="password" value={form.token} placeholder="github_pat_…" onChange={(e) => setForm({ ...form, token: e.target.value })} autoCapitalize="off" autoCorrect="off" /></label>
           <div style={{ display: "flex", gap: 8, marginTop: 10, flexWrap: "wrap" }}>
-            <button disabled={busy || !form.token.trim()} onClick={save} style={{ padding: "8px 14px", borderRadius: 6, border: `1px solid ${C.acc}`, background: "rgba(14,165,233,0.15)", color: C.acc, fontSize: 12, cursor: "pointer" }}>{busy ? "Test…" : "Enregistrer et tester"}</button>
-            {getCfg() && <button onClick={disable} style={{ padding: "8px 14px", borderRadius: 6, border: `1px solid ${C.line}`, background: "none", color: C.txt, fontSize: 12, cursor: "pointer" }}>Désactiver</button>}
-            <button onClick={() => setOpen(false)} style={{ padding: "8px 14px", borderRadius: 6, border: `1px solid ${C.line}`, background: "none", color: C.dim, fontSize: 12, cursor: "pointer" }}>Fermer</button>
+            <button disabled={busy || !form.token.trim()} onClick={save} style={{ minHeight: 40, padding: "0 14px", borderRadius: 6, border: `1px solid ${C.acc}`, background: "rgba(14,165,233,0.15)", color: C.acc, fontSize: 13, cursor: "pointer" }}>{busy ? "Test…" : "Enregistrer et tester"}</button>
+            {getCfg() && <button onClick={disable} style={{ minHeight: 40, padding: "0 14px", borderRadius: 6, border: `1px solid ${C.line}`, background: "none", color: C.txt, fontSize: 13, cursor: "pointer" }}>Désactiver</button>}
+            <button onClick={() => setOpen(false)} style={{ minHeight: 40, padding: "0 14px", borderRadius: 6, border: `1px solid ${C.line}`, background: "none", color: C.dim, fontSize: 13, cursor: "pointer" }}>Fermer</button>
           </div>
-          <p style={{ margin: "10px 0 4px", color: C.dim, fontSize: 11 }}>
+          <p style={{ margin: "10px 0 4px", color: C.dim, fontSize: 12.5 }}>
             iPhone : Partager → « Sur l'écran d'accueil ». L'application s'ouvre alors en plein écran et Safari ne purge plus ses données.
           </p>
-          <p style={{ margin: "0 0 8px", color: C.dim, fontSize: 10 }}>
+          <p style={{ margin: "0 0 8px", color: C.dim, fontSize: 12 }}>
             Météo : <a href="https://open-meteo.com/" style={{ color: C.dim }}>Open-Meteo.com</a> (CC BY 4.0), modèles Météo-France AROME et ECMWF ·
             Marée : constantes TICON-4 (CC BY 4.0), calcul d'après Neaps (MIT).
           </p>
         </div>
       )}
-      <div style={{ maxWidth: 560, margin: "0 auto", padding: "7px 16px", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, fontSize: 11 }}>
+      <div style={{ maxWidth: 560, margin: "0 auto", padding: "4px 16px", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, fontSize: 12.5 }}>
         <span style={{ minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{label}</span>
-        <button onClick={() => setOpen(!open)} style={{ flexShrink: 0, padding: "4px 10px", borderRadius: 5, border: `1px solid ${C.line}`, background: "none", color: C.txt, fontSize: 11, cursor: "pointer" }}>{open ? "Masquer" : "Réglages"}</button>
+        <button onClick={() => setOpen(!open)} aria-expanded={open} style={{ flexShrink: 0, minHeight: 40, padding: "0 12px", borderRadius: 6, border: `1px solid ${C.line}`, background: "none", color: C.txt, fontSize: 12.5, cursor: "pointer" }}>{open ? "Masquer" : "Réglages"}</button>
       </div>
-    </div>
+    </footer>
   );
 }

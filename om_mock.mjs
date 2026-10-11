@@ -39,7 +39,7 @@ export function omRespond(urlStr, scenario = "nominal") {
         const hr = (t / 3600) % 24;                 // heure UTC
         const day = Math.sin(2 * Math.PI * (hr - 9) / 24);
         if (!isMarine && model === "meteofrance_seamless" && k >= 48 && scenario !== "aromefull") return null; // échéance AROME
-        const bump = /^ecmwf_ifs/.test(model) ? 3 : 0;
+        const bump = /^ecmwf_ifs/.test(model) ? (scenario === "spread" ? 25 : 3) : 0;
         switch (v) {
           case "wind_speed_10m": return +(16 + 10 * day + i * 1.3 + bump).toFixed(1);
           case "wind_gusts_10m": return +((16 + 10 * day + i * 1.3 + bump) * 1.6).toFixed(1);
