@@ -2,7 +2,7 @@
 // cache en secours (l'application s'ouvre sans réseau, marée comprise).
 // Les appels météo et GitHub ne sont jamais mis en cache ici : l'application
 // gère elle-même sa mémoire de la dernière météo téléchargée.
-const CACHE = "guide-bar-43e55a9d22d6";
+const CACHE = "guide-bar-40e0e96ee964";
 const SHELL = ["./", "./index.html", "./logonna.html", "./pirou.html", "./logonna-manifest.json", "./pirou-manifest.json", "./logonna.png", "./pirou.png"];
 
 self.addEventListener("install", (e) => {
