@@ -1,0 +1,5 @@
+node_modules/
+tests/shots/
+tests/.build/
+studio-build/
+tests/tmp/

@@ -1,0 +1,89 @@
+{
+  "name": "Guides de pêche du bar",
+  "short_name": "Pêche bar",
+  "lang": "fr",
+  "dir": "ltr",
+  "description": "Pêche du bar aux leurres : Logonna-Daoulas (rade de Brest), Pirou Plage (Cotentin), Plouguerneau (Pays des Abers) et Audierne (Cap Sizun).",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#020617",
+  "theme_color": "#020617",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Logonna-Daoulas",
+      "url": "./logonna.html",
+      "icons": [
+        {
+          "src": "logonna.png",
+          "sizes": "512x512",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Pirou Plage",
+      "url": "./pirou.html",
+      "icons": [
+        {
+          "src": "pirou.png",
+          "sizes": "512x512",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Plouguerneau",
+      "url": "./plouguerneau.html",
+      "icons": [
+        {
+          "src": "plouguerneau.png",
+          "sizes": "512x512",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Audierne",
+      "url": "./audierne.html",
+      "icons": [
+        {
+          "src": "audierne.png",
+          "sizes": "512x512",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Carantec",
+      "url": "./carantec.html",
+      "icons": [
+        {
+          "src": "carantec.png",
+          "sizes": "512x512",
+          "type": "image/png"
+        }
+      ]
+    }
+  ]
+}
