@@ -3,7 +3,7 @@
   "short_name": "Pêche bar",
   "lang": "fr",
   "dir": "ltr",
-  "description": "Pêche du bar aux leurres : six guides, en Finistère (rade de Brest, Pays des Abers, Cap Sizun, baie de Morlaix et Haut-Léon, Cornouaille) et dans la Manche (Cotentin ouest).",
+  "description": "Pêche du bar aux leurres : sept guides, en Finistère (rade de Brest, presqu'île de Crozon et baie de Douarnenez, Pays des Abers, Cap Sizun, baie de Morlaix et Haut-Léon, Cornouaille) et dans la Manche (Cotentin ouest).",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
@@ -91,6 +91,17 @@
       "icons": [
         {
           "src": "concarneau.png",
+          "sizes": "512x512",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Crozon",
+      "url": "./crozon.html",
+      "icons": [
+        {
+          "src": "crozon.png",
           "sizes": "512x512",
           "type": "image/png"
         }

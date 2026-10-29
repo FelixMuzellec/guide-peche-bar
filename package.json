@@ -1,10 +1,10 @@
 {
   "name": "guide-peche-bar",
-  "version": "8.9.0",
-  "description": "Guides de pêche du bar — Logonna-Daoulas, Pirou Plage, Plouguerneau, Audierne, Carantec et Concarneau",
+  "version": "8.12.0",
+  "description": "Guides de pêche du bar — Logonna-Daoulas, Pirou Plage, Plouguerneau, Audierne, Carantec, Concarneau et Crozon",
   "scripts": {
     "build": "node scripts/build.mjs",
-    "test:unit": "node tests/unit.mjs logonna && node tests/unit.mjs pirou && node tests/unit.mjs plouguerneau && node tests/unit.mjs audierne && node tests/unit.mjs carantec && node tests/unit.mjs concarneau && TZ=Pacific/Auckland node tests/unit.mjs logonna",
+    "test:unit": "node tests/unit.mjs logonna && node tests/unit.mjs pirou && node tests/unit.mjs plouguerneau && node tests/unit.mjs audierne && node tests/unit.mjs carantec && node tests/unit.mjs concarneau && node tests/unit.mjs crozon && TZ=Pacific/Auckland node tests/unit.mjs logonna",
     "test:e2e": "node tests/e2e.mjs",
     "test:contract": "node tests/contract.mjs",
     "test": "npm run test:unit && npm run test:e2e && CONTRACT_MOCK=1 npm run test:contract"

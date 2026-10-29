@@ -1,26 +1,27 @@
 # Guides de pêche du bar — Finistère et Manche
 
-Une application web pour la pêche du bar aux leurres du bord, avec un accueil et six guides (59 spots).
+Une application web pour la pêche du bar aux leurres du bord, avec un accueil et sept guides (66 spots).
 
 **Finistère (29)**, du nord au sud :
 - **Carantec** (baie de Morlaix et Haut-Léon) : 7 spots, de la baie du Kernic à Locquirec → `carantec.html`
 - **Plouguerneau** (Pays des Abers) : 10 spots, des abers au Conquet → `plouguerneau.html`
 - **Logonna-Daoulas** (rade de Brest) : 11 spots, du fond de rade au goulet → `logonna.html`
+- **Crozon** (presqu'île de Crozon et baie de Douarnenez) : 7 spots, de la pointe de Dinan à la pointe de Trénaouret → `crozon.html`
 - **Audierne** (Cap Sizun et baie d'Audierne) : 11 spots, de la pointe du Raz à la pointe de Penmarc'h → `audierne.html`
 - **Concarneau** (Cornouaille) : 10 spots, de l'Odet à la Laïta → `concarneau.html`
 
 **Manche (50)** :
 - **Pirou Plage** (côte ouest du Cotentin) : 10 spots, de Granville à Goury → `pirou.html`
 
-Les six guides n'ont aucun spot en commun (Logonna garde la rade, le goulet et Crozon) et utilisent exactement le même moteur ; seul le fichier de configuration du lieu change.
+Les sept guides n'ont aucun spot en commun (Logonna garde la rade, le goulet et Crozon) et utilisent exactement le même moteur ; seul le fichier de configuration du lieu change.
 
-Version 8.9 (le numéro et l'identifiant de construction sont affichés en bas de l'accueil : c'est la façon de vérifier qu'un dépôt est bien en ligne).
+Version 8.12 (le numéro et l'identifiant de construction sont affichés en bas de l'accueil : c'est la façon de vérifier qu'un dépôt est bien en ligne).
 
-Elle s'ouvre dans le navigateur du téléphone et s'installe sur l'écran d'accueil comme **une seule application** : l'accueil et les six guides partagent le même manifeste (`manifest.json`). Installée depuis n'importe laquelle des sept pages, c'est la même application ; elle s'ouvre sur l'accueil, et le titre de chaque guide (« ‹ Guide du bar · … ») y ramène. Sur Android, un appui long sur l'icône propose des raccourcis vers les trois premiers guides : Chrome pour Android n'en affiche pas plus de trois ([web.dev](https://web.dev/articles/app-shortcuts)). L'accueil affiche un bouton « Installer l'application » quand Chrome le permet, et l'aide pas à pas (Android, iPhone) sinon.
+Elle s'ouvre dans le navigateur du téléphone et s'installe sur l'écran d'accueil comme **une seule application** : l'accueil et les sept guides partagent le même manifeste (`manifest.json`). Installée depuis n'importe laquelle des huit pages, c'est la même application ; elle s'ouvre sur l'accueil, et le titre de chaque guide (« ‹ Guide du bar · … ») y ramène. Sur Android, un appui long sur l'icône propose des raccourcis vers les trois premiers guides : Chrome pour Android n'en affiche pas plus de trois ([web.dev](https://web.dev/articles/app-shortcuts)). L'accueil affiche un bouton « Installer l'application » quand Chrome le permet, et l'aide pas à pas (Android, iPhone) sinon.
 
-**Accueil** (v8.9) : les guides sont regroupés par département, du nord au sud, avec le nombre de spots ; un champ « Chercher un spot » trouve un spot par son nom, sa commune, sa région ou son guide, sans tenir compte des accents, des majuscules, des apostrophes ni des tirets (« penhir » trouve la pointe de Pen-Hir, « laita » l'estuaire de la Laïta, « plouescat » la baie du Kernic). Un résultat ouvre le guide directement sur la fiche du spot (lien `guide.html#spot=<id>`) ; la touche « Aller » du clavier ouvre le premier ; flèches et Échap au clavier. La liste des spots est écrite à la construction depuis les fiches : un spot ajouté à un guide apparaît dans la recherche sans rien modifier d'autre.
+**Accueil** (v8.9) : les guides sont regroupés par département, du nord au sud, avec le nombre de spots ; un champ « Chercher un spot » trouve un spot par son nom, sa commune, sa région ou son guide, sans tenir compte des accents, des majuscules, des apostrophes ni des tirets (« penhir » trouve la pointe de Pen-Hir, « laita » l'estuaire de la Laïta, « plouescat » la baie du Kernic). Un résultat ouvre le guide directement sur la fiche du spot (lien `guide.html#spot=<id>`) ; la touche « Aller » du clavier ouvre le premier ; flèches et Échap au clavier. Le bouton « 📍 Les spots les plus proches de moi » (v8.12) prend la position du téléphone et liste les 8 spots les plus proches, tous guides confondus (tes spots compris), avec leur distance à vol d'oiseau ; loin de tout guide (plus de 60 km), il le dit et donne le plus proche. La position ne quitte pas le téléphone, et la recherche marche hors ligne. La liste des spots est écrite à la construction depuis les fiches : un spot ajouté à un guide apparaît dans la recherche sans rien modifier d'autre.
 
-Une fois ouverte, elle fonctionne hors ligne : l'accueil et les six guides sont mis en cache dès la première visite (recherche comprise), la marée est calculée sur l'appareil, et la dernière météo téléchargée reste affichée.
+Une fois ouverte, elle fonctionne hors ligne : l'accueil et les sept guides sont mis en cache dès la première visite (recherche comprise), la marée est calculée sur l'appareil, et la dernière météo téléchargée reste affichée.
 
 Chaque guide garde sa propre météo et son propre journal ; la clé API de l'onglet Photos sert à tous.
 
@@ -31,11 +32,11 @@ Adresse : <https://felixmuzellec.github.io/guide-peche-bar/>
 ```
 index.html            accueil (point d'entrée de l'application) ┐
 logonna.html, pirou.html, plouguerneau.html, audierne.html,     │ le site publié par GitHub Pages :
-carantec.html, concarneau.html                                  │
+carantec.html, concarneau.html, crozon.html                     │
 manifest.json         une seule application installable         │ fichiers construits, à la racine,
 icon-192.png, icon-512.png, icon-maskable.png                   │ à ne pas modifier à la main
 logonna.png, pirou.png, plouguerneau.png, audierne.png,         │
-carantec.png, concarneau.png                                    │
+carantec.png, concarneau.png, crozon.png                        │
 sw.js                 fonctionnement hors ligne                 │
 .nojekyll             fichiers servis tels quels                ┘
 src/                  les sources
@@ -48,16 +49,18 @@ src/                  les sources
     rules.js              réglementation 2026 (nord et sud du 48e parallèle), remise à l'eau, sécurité par spot
     lures.js              conseil leurres : courant du créneau, vent de face, profondeur, choix du leurre de ta boîte, de sa taille, de sa tête et de sa couleur
     tackle.js             fiches techniques des leurres de ta boîte (poids, nage, têtes), relevées chez les fabricants, et ta boîte
+    myspots.js            tes spots : fiche construite à partir de tes choix, registre commun au moteur, fusion téléphone / GitHub
     photo.js              analyse photo : EXIF, marée et lumière de la prise de vue, trois passes, contrôle des preuves,
                           export et import d'une analyse faite par l'abonnement Claude
     persist.js            stockage
   sites/                ce qui est propre à chaque lieu
     logonna.config.js     spots, fiches terrain, sécurité, zones, ports de marée, proies
-    pirou.config.js, plouguerneau.config.js, audierne.config.js, carantec.config.js, concarneau.config.js
+    pirou.config.js, plouguerneau.config.js, audierne.config.js, carantec.config.js, concarneau.config.js, crozon.config.js
   ui/                   l'interface
     App.jsx               données du jour et navigation par onglets
     kit.jsx               cartes, tuiles, puces, sources : le style commun
     TabBar.jsx, MapView.jsx, Orientation.jsx, components.jsx
+    MySpotForm.jsx        formulaire « Ajouter un spot » (GPS, carte, coordonnées collées)
     theme.js              affichage « plein soleil » (Réglages), commun aux guides et à l'accueil
     tabs/                 un fichier par onglet : Synthese, Spots (+ SpotDetail), Photos, Leurres,
                           Maree, Meteo, Saison, JournalTab, Regles
@@ -75,9 +78,9 @@ tests/
   om_mock.mjs           simulateur d'Open-Meteo
   ref/                  tables de référence (marée de Pirou, octobre 2026 ; Aber Wrac'h, Brignogan, Lanildut,
                         Le Conquet, Audierne, Saint-Guénolé, Roscoff, château du Taureau, Primel, Locquirec, Concarneau,
-                        Bénodet, Port-Manec'h, Le Pouldu, novembre 2026)
-scripts/sites.mjs     la liste des guides (avec leur description d'accueil) et des 18 fichiers du site (construction et tests)
-scripts/build.mjs     construit les 18 fichiers du site, à la racine, depuis src/
+                        Bénodet, Port-Manec'h, Le Pouldu, Morgat, Douarnenez, novembre 2026)
+scripts/sites.mjs     la liste des guides (avec leur description d'accueil) et des 20 fichiers du site (construction et tests)
+scripts/build.mjs     construit les 20 fichiers du site, à la racine, depuis src/
 scripts/build-studio.mjs  construit la page d'analyse (studio-build/analyse-photo.html, non publiée par GitHub Pages)
 scripts/site-icons.mjs    dessine les icônes des guides
 scripts/icons.mjs     dessine les icônes de l'application (assets/app-icon.svg → assets/icon-*.png)
@@ -100,8 +103,8 @@ Pour corriger la description d'un spot, le seul fichier à modifier est `src/sit
 
 Settings → Pages → *Deploy from a branch* → Branch `main`, dossier `/ (root)` → Save.
 
-Mettre le site à jour depuis le téléphone : *Add file → Upload files* à la racine du dépôt, avec les 18 fichiers du site
-(`index.html`, `logonna.html`, `pirou.html`, `plouguerneau.html`, `audierne.html`, `carantec.html`, `concarneau.html`, `manifest.json`, `icon-192.png`, `icon-512.png`, `icon-maskable.png`, `logonna.png`, `pirou.png`, `plouguerneau.png`, `audierne.png`, `carantec.png`, `concarneau.png`, `sw.js`).
+Mettre le site à jour depuis le téléphone : *Add file → Upload files* à la racine du dépôt, avec les 20 fichiers du site
+(`index.html`, `logonna.html`, `pirou.html`, `plouguerneau.html`, `audierne.html`, `carantec.html`, `concarneau.html`, `crozon.html`, `manifest.json`, `icon-192.png`, `icon-512.png`, `icon-maskable.png`, `logonna.png`, `pirou.png`, `plouguerneau.png`, `audierne.png`, `carantec.png`, `concarneau.png`, `crozon.png`, `sw.js`).
 L'identifiant de construction est l'empreinte de tous les fichiers servis : le moindre changement change le cache hors ligne, et la copie hors ligne est toujours relue sur le serveur (jamais dans le cache HTTP du navigateur).
 Ne jamais déposer un fichier de `src/` à la racine. Après un dépôt, vérifier qu'aucun doublon « (1) », « (2) » n'a été créé, puis que le bas de l'accueil affiche la nouvelle version.
 Depuis la v8.4, `logonna-manifest.json` et `pirou-manifest.json` ne servent plus : ils peuvent être supprimés du dépôt (les laisser ne gêne rien).
@@ -111,7 +114,8 @@ Depuis la v8.4, `logonna-manifest.json` et `pirou-manifest.json` ne servent plus
 L'écran est organisé en onglets (l'onglet ouvert est inscrit dans l'adresse, `#leurres` par exemple, et le bouton retour du téléphone revient au précédent) :
 
 - **Synthèse** : en tête, la **tendance de la semaine** (le meilleur jour des 7 prochains, une barre par jour ; un appui ouvre le jour, le détail jour par jour se déplie), chargée d'elle-même à l'ouverture ; puis le meilleur spot et son créneau, le leurre conseillé pour ce créneau, le meilleur créneau de plein jour quand le verdict tombe à l'aube, au crépuscule ou de nuit, les conditions du jour en six tuiles (vent, mer, marée, soleil, eau et saison, pression) — chaque tuile ouvre l'onglet qui la détaille —, les autres choix et la règle du jour.
-- **Spots** : mes heures de pêche, la carte, le classement, la fiche du spot (créneaux, terrain, leurres, accès). Un lien `#spot=<id>` (recherche de l'accueil) ouvre directement une fiche.
+- **Spots** : mes heures de pêche, la carte, tes spots, le classement, la fiche du spot (créneaux, terrain, leurres, accès). Un lien `#spot=<id>` (recherche de l'accueil) ouvre directement une fiche.
+- **Tes spots** (v8.11) : « ＋ Ajouter un spot » dans l'onglet Spots. Position par le GPS du téléphone, un appui sur la carte, ou des coordonnées collées (décimales, degrés-minutes, lien Google Maps). Puis quelques choix, chacun avec « je ne sais pas » : type (pointe, plage, estuaire, digue, anse abritée), côté de l'eau face au large (vent et houle de face), niveau de danger, fond, profondeur, moment de marée où ça prend selon toi. Le guide en fait une fiche complète : marée du port et zone météo du spot du guide le plus proche (le port se change), temps de route estimé (vol d'oiseau × 1,4 à 50 km/h, ou le tien), météo propre à ses coordonnées, créneaux de ta phase de marée ou, à défaut, de la règle générale (dite comme telle). Il est classé avec les autres, apparaît sur la carte, dans le journal, les leurres, l'analyse photo et la recherche de l'accueil, avec le badge « Ton spot ». Un spot engagé n'est jamais proposé si la houle est inconnue ou dépasse 1,5 m. Il se modifie ou se supprime depuis sa fiche (les sessions du journal restent). Gardé sur l'appareil (30 par guide au plus) et, si la sauvegarde est activée, dans le dépôt du journal (`spots-<guide>.json`) : la version la plus récente gagne, une suppression reste notée pour ne pas revenir de l'autre appareil. Un point à plus de 60 km du spot le plus proche du guide est refusé : il appartient à un autre guide.
 - **Photos** : analyse d'un spot à partir d'une à six photos (voir plus bas).
 - **Leurres** : pour un spot et un créneau, **le leurre précis de ta boîte** — modèle et taille, poids (ou tête), couleur, nage, animation — puis un plan B dans une autre couche et, derrière un stickbait, la parade aux bars qui suivent sans prendre (Mr Joe coulant). Puis la famille de leurre, la couleur, la taille et le poids avec leurs sources ; toute ta boîte classée pour ce créneau ; les fiches techniques ; les leurres de la fiche du spot ; les proies du mois ; les repères (poids des têtes, couleurs, familles, saisons).
 
@@ -141,7 +145,7 @@ L'écran est organisé en onglets (l'onglet ouvert est inscrit dans l'adresse, `
 - **Carte des spots** (Leaflet, fond OpenStreetMap) : un disque par spot, coloré selon sa note ; un appui ouvre la fiche.
 - **Marée calculée sur l'appareil** (prédiction harmonique, constantes TICON-4), pour le port de chaque spot, en heure de Paris quel que soit le fuseau du téléphone.
   Précision contrôlée contre les tables SHOM : Brest ±3,9 min, ports du Cotentin ±4 à ±6 min.
-  Finistère (contrôle de novembre 2026, écart moyen sur l'heure et la hauteur des pleines et basses mers) : Le Conquet 3,3 min / 3 cm, Audierne 4,5 min / 4 cm (stations TICON-4) ; Aber Wrac'h 3,0 min / 4 cm, Lanildut 4,5 min / 4 cm (ports secondaires du Conquet), Brignogan 2,8 min / 4 cm (de Roscoff ; sert aussi à la baie du Kernic), Saint-Guénolé 2,5 min / 4 cm (d'Audierne) ; baie de Morlaix : Roscoff 3,1 min / 5 cm (station TICON-4), château du Taureau 3,1 min / 4 cm, anse de Primel 3,0 min / 4 cm, Locquirec 2,9 min / 4 cm (ports secondaires de Roscoff) ; Cornouaille : Concarneau 4,4 min / 4 cm (station TICON-4), Bénodet 3,7 min / 4 cm, Port-Manec'h 3,6 min / 4 cm, Le Pouldu 3,6 min / 3 cm (ports secondaires de Concarneau). Corsen et Penhors sont interpolés entre deux ports, sans table de contrôle.
+  Finistère (contrôle de novembre 2026, écart moyen sur l'heure et la hauteur des pleines et basses mers) : Le Conquet 3,3 min / 3 cm, Audierne 4,5 min / 4 cm (stations TICON-4) ; Aber Wrac'h 3,0 min / 4 cm, Lanildut 4,5 min / 4 cm (ports secondaires du Conquet), Brignogan 2,8 min / 4 cm (de Roscoff ; sert aussi à la baie du Kernic), Saint-Guénolé 2,5 min / 4 cm (d'Audierne) ; baie de Morlaix : Roscoff 3,1 min / 5 cm (station TICON-4), château du Taureau 3,1 min / 4 cm, anse de Primel 3,0 min / 4 cm, Locquirec 2,9 min / 4 cm (ports secondaires de Roscoff) ; Cornouaille : Concarneau 4,4 min / 4 cm (station TICON-4), Bénodet 3,7 min / 4 cm, Port-Manec'h 3,6 min / 4 cm, Le Pouldu 3,6 min / 3 cm (ports secondaires de Concarneau) ; baie de Douarnenez : Morgat 4,0 min / 3 cm, Douarnenez 3,8 min / 3 cm (ports secondaires de Brest, aucun marégraphe TICON-4 dans la baie). Corsen et Penhors sont interpolés entre deux ports, sans table de contrôle.
   Ports interpolés du Cotentin (Pirou, Régnéville, Agon, Gouville, Carteret, Surtainville, Sciotot) : contrôle d'octobre 2026 à Pirou contre une table tierce publiée — pleines mers ±12 min si coef ≥ 60, jusqu'à ±40 min en morte-eau, hauteurs ±0,2 m.
 - **Météo par API, spot par spot** ([Open-Meteo](https://open-meteo.com/)) :
   - vent, rafales, nébulosité et pression : AROME (Météo-France, maille d'environ 1,3 km) en priorité, ECMWF au-delà de son échéance ;
@@ -155,7 +159,7 @@ L'écran est organisé en onglets (l'onglet ouvert est inscrit dans l'adresse, `
 - **Sécurité par spot**, chaque consigne avec sa source ; certaines s'activent selon le jour (Térénez au-delà du coefficient 85, Carteret au-delà de 90, Agon sur marée montante, Mousterlin au-delà de 75). Goury n'est plus proposé au-delà du coefficient 90, par prudence : la seule source chiffrée (un récit de sortie en bateau) dit qu'au-delà « le courant est très fort ». Quand la houle est inconnue (modèle de vagues indisponible ou trop loin du spot), les spots engagés de la côte ouverte ne sont pas proposés : 0 m n'est pas une mesure. Au-delà de la houle maximale d'une fiche, un spot engagé n'est jamais proposé (aucune tolérance), un autre spot l'est encore jusqu'à 0,5 m de plus, avec une note abaissée.
 - **Plein soleil** (Réglages, bandeau du bas) : affichage clair à fort contraste pour lire au soleil ; photos et carte gardent leurs couleurs. Choix commun à tous les guides et à l'accueil.
 - **Réglementation 2026** (arrêté du 1er avril 2026), appliquée spot par spot selon le 48e parallèle :
-  - au nord (zones CIEM 7 et 4 : Pirou, Logonna, Plouguerneau, Carantec et le Cap Sizun, de l'embouchure du Goyen à Brézellec) : 3 bars par pêcheur et par jour en janvier et du 1er avril au 31 décembre, capture et relâcher seulement du 1er février au 31 mars (bandeau dans le verdict) ;
+  - au nord (zones CIEM 7 et 4 : Pirou, Logonna, Plouguerneau, Carantec, Crozon et le Cap Sizun, de l'embouchure du Goyen à Brézellec) : 3 bars par pêcheur et par jour en janvier et du 1er avril au 31 décembre, capture et relâcher seulement du 1er février au 31 mars (bandeau dans le verdict) ;
   - au sud (zone CIEM 8 : Penhors, la Torche, Saint-Guénolé, la pointe de Penmarc'h et tout le guide de Concarneau) : 2 bars par pêcheur et par jour toute l'année, sans période de pêcher-relâcher (article 3 ; [synthèse DDTM du Finistère, avril 2026](https://www.locquirec.bzh/wp-content/uploads/2026/04/2026-SYNTHESE-peche-loisir-en-mer.pdf)) ;
   - partout : taille minimale 42 cm, marquage, déclaration RecFishing (toujours obligatoire selon la [page du ministère de la Mer](https://www.mer.gouv.fr/peche-de-loisir-en-mer) mise à jour le 30/09/2026 ; le Conseil d'État a refusé de la suspendre le 18/06/2026 ; des articles de presse annoncent un retrait que ni le ministère ni la FNPP ne confirment au 29/10/2026) ; et les gestes pour bien relâcher un bar. Le guide d'Audierne, à cheval sur le 48e, affiche les deux régimes et celui de chaque spot. Toute date hors de 2026 est signalée « à revérifier ».
 - **Mes heures de pêche** (5 h → 23 h par défaut, nuit comprise sur demande) : les créneaux hors de ces heures sont grisés et jamais proposés.
@@ -190,7 +194,7 @@ Le journal est enregistré dans le navigateur. Pour qu'il ne se perde jamais et 
 2. GitHub → Settings → Developer settings → Fine-grained tokens → Generate. Donne-lui l'accès au seul dépôt du journal, avec la permission *Contents : Read and write*.
 3. Dans l'application, ouvre **Réglages** (bandeau du bas) et colle le jeton. Il reste sur l'appareil.
 
-Chaque guide écrit son propre fichier (`journal-logonna-daoulas.json`, `journal-pirou-plage.json`, `journal-plouguerneau.json`, `journal-audierne.json`, `journal-carantec.json`, `journal-concarneau.json`). La fusion se fait sans perte : une session n'est jamais supprimée.
+Tes spots ajoutés sur le téléphone sont sauvegardés à côté, un fichier par guide (`spots-logonna-daoulas.json`…). Chaque guide écrit son propre fichier de journal (`journal-logonna-daoulas.json`, `journal-pirou-plage.json`, `journal-plouguerneau.json`, `journal-audierne.json`, `journal-carantec.json`, `journal-concarneau.json`, `journal-crozon.json`). La fusion se fait sans perte : une session n'est jamais supprimée.
 
 ## Développement
 
@@ -216,6 +220,7 @@ npm run test:contract  # contrat avec le vrai Open-Meteo (réseau)
 - Finistère (Plouguerneau, Audierne) : mieuxpecher.com (Norbert, « Top 10 » Bretagne 2018-2020 et coins de pêche du Finistère nord) ; peche-poissons.com (J.-B. Vidal, « Bar en Bretagne », 19/10/2026 ; « Au leurre, à la pointe du Raz » avec le guide Yves Pennanen, 17/12/2021) ; Pêche-Rando Bar (guide du Cap Sizun, bilans 2016-2020) ; cannes-peche.blog4ever.com (2016) ; lechasseursousmarin.com (Brézellec, 2025) ; [Le Figaro Nautisme, spots de Bretagne (28/03/2026)](https://figaronautisme.meteoconsult.fr/actus-nautisme-loisirs/2026-03-28/86935-les-spots-de-peche-en-mer-les-plus-reputes-de-bretagne) ; [bateaux.com, Raz de Sein (2025)](https://www.bateaux.com/article/32097/le-raz-de-sein-les-bons-conseils-pour-ce-passage-delicat) ; inventaire du patrimoine (patrimoine.bzh, ports-abris de Feunteun Aod et Brézellec) ; office de tourisme du Pays bigouden (lame de fond de 1870 à Saint-Guénolé) ; Wikipédia (positions des pointes) ; visorando, surf-report (accès, fonds de sable, baïnes). Tables de marée de contrôle : SHOM, via les tables mensuelles publiées par Météo Consult.
 - Baie de Morlaix (Carantec) : [office de tourisme de la baie de Morlaix, « La pêche du bord de mer »](https://www.baiedemorlaix.bzh/fr/s-inspirer/spots-peche-bord-de-mer/) (conseils d'un pêcheur de Plougasnou) et [« La pêche au bar avec un guide pêche »](https://www.baiedemorlaix.bzh/fr/s-inspirer/la-peche-au-bar-avec-un-guide-peche/) ; [Pesketa, guide de pêche à Morlaix](https://pesketa.com/index.php/peche-du-bar-au-leurre/) ; [sport-decouverte, pêche du bar à Carantec](https://www.sport-decouverte.com/peche-sportive-carantec.html) ; [mieuxpecher, Finistère nord](https://mieuxpecher.com/finistere-nord-coins-de-peche/) ; [J.-B. Vidal, peche-poissons.com (19/10/2026)](https://peche-poissons.com/mer/peche-bar-bretagne/) ; inventaire du patrimoine (patrimoine.bzh), visorando, tourismebretagne, oblyk, sea-seek, mondo.surf (terrain, accès, coordonnées). Tables de marée de contrôle : SHOM, via Météo Consult.
 - Cornouaille (Concarneau) : [mieuxpecher, Finistère sud](https://mieuxpecher.com/finistere-sud-coins-de-peche/) (Cap Coz, Beg Meil, Mousterlin, l'Odet, Kerjean, Rospico, Aven et Bélon, Laïta) ; cannes-peche.blog4ever.com (Sables Blancs, Cap Coz, Trévignon, Kerjean) ; chtipecheur.com (Cap Coz, Beg Meil, Mousterlin) ; carnet-de-peche.com (Cap Coz, Mousterlin) ; atout-pecheur.fr (Trévignon) ; ultimate-fishing.net (N. Cadiou, « Pêche du bar sur l'estuaire de l'Odet, un challenge », 2023) ; apppcc.jimdofree.com (embouchure de la Laïta) ; office de tourisme de Concarneau à Pont-Aven (deconcarneauapontaven.com, « Les trois univers pêche ») ; Lorient Bretagne Sud Tourisme (courants du chenal du Bas Pouldu) ; [J.-B. Vidal, peche-poissons.com (19/10/2026)](https://peche-poissons.com/mer/peche-bar-bretagne/) ; tourismebretagne, coastalwiki, fishipedia, visorando, plages.tv, navship (terrain, accès, positions). Non retenus faute de deux sources ou d'une position : pointe de la Jument, Cabellou, Loctudy, Île-Tudy, Lesconil, Guilvinec, Raguénez, baie de Kerogan.
+- Presqu'île de Crozon et baie de Douarnenez (Crozon, v8.10) : [mieuxpecher, Finistère nord](https://mieuxpecher.com/finistere-nord-coins-de-peche/) (Norbert, 2018 : château de Dinan, Lostmarc'h, pointe et port de Morgat, port de Douarnenez, pointe de Leydé, pointe de Trénaouret « en début de montante ») ; [carnet-de-peche.com, pointe de Dinan](https://www.carnet-de-peche.com/spots/pointe-de-dinan) ; [carnalor.com, forum « crozon rade de brest »](https://www.carnalor.com/t10050-crozon-rade-de-brest) (Guy535, 2012) ; [lechasseursousmarin.com](https://www.lechasseursousmarin.com/departements/finistere/) (pointes de Dinan, de Morgat et de Luguénez, 2025) ; [pecheaubar.com, « La Pêche au bar en Bretagne : Douarnenez »](https://pecheaubar.com/peche-au-bar-en-bretagne-douarnenez/) ; [chtipecheur.com, « Spots de pêche de Bretagne »](https://www.chtipecheur.com/post/Bretagne-spots-de-peche-balades-1298) ; [Breizh pêche 29, « Coup du soir en baie de Douarnenez »](https://guidedepechemeretriviere.over-blog.com/article-30888929.html) (G. Rognant, 2009) ; [J.-B. Vidal, peche-poissons.com (19/10/2026)](https://peche-poissons.com/mer/peche-bar-bretagne/) ; réserve naturelle de la presqu'île de Crozon (fiche Lostmarc'h : pêche autorisée) ; CNCM, « Les sentiers de Morgat » ; visorando ; plages.tv ; surf-forecast ; Google Maps (positions). Trois fiches n'ont qu'une source de pêche et le disent (Lostmarc'h, Leydé, Trénaouret). Non retenus : cap de la Chèvre (« pas très accessible et pas de fond », carnalor), pointe de Saint-Hernot (fermée aux piétons, visorando), port du Rosmeur (pêche à l'appât dans les sources), île de l'Aber, plages du Ris et de Trezmalaouen (une seule source). Tables de marée de contrôle : SHOM, via Météo Consult.
 - Baie du Kernic (Carantec, Haut-Léon) : cannes-peche.blog4ever.com (baie du Kernic et grande plage de Ker Emma), atout-pecheur.fr (plage de Plounévez-Lochrist), office de tourisme de Roscoff (« Plouescat grandeur nature ») ; une seule source parle du bar : la fiche le signale.
 - Règles générales de marée (« 3 premières heures de montante, 3 dernières de descendante », coefficients 50 à 80) : J.-B. Vidal les donne comme des règles générales (« les phases de marée […] vont dépendre de chaque coin ») ; chaque fiche les signale comme telles quand aucune source locale ne les précise.
 - Pointe de Penmarc'h (Audierne) : [Le Figaro Nautisme, Top 10 (01/03/2026)](https://figaronautisme.meteoconsult.fr/actus-nautisme-loisirs/2026-03-01/78013-top-10-des-spots-de-peche-en-mer-en-france-metropolitaine), [mieuxpecher, Finistère sud](https://mieuxpecher.com/finistere-sud-coins-de-peche/), [carnet-de-peche.com](https://www.carnet-de-peche.com/spots/pointe-de-penmarch). Kermorvan et Blancs-Sablons (Plouguerneau) : mieuxpecher, [patrimoine-iroise.fr (phare de Kermorvan)](https://www.patrimoine-iroise.fr/culturel/maritime/Phare-Kermorvan), atout-pecheur, office de tourisme Iroise Bretagne, fishipedia.
