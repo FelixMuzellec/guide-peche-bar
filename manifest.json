@@ -3,7 +3,7 @@
   "short_name": "Pêche bar",
   "lang": "fr",
   "dir": "ltr",
-  "description": "Pêche du bar aux leurres : Logonna-Daoulas (rade de Brest), Pirou Plage (Cotentin), Plouguerneau (Pays des Abers) et Audierne (Cap Sizun).",
+  "description": "Pêche du bar aux leurres : six guides, en Finistère (rade de Brest, Pays des Abers, Cap Sizun, baie de Morlaix et Haut-Léon, Cornouaille) et dans la Manche (Cotentin ouest).",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
@@ -80,6 +80,17 @@
       "icons": [
         {
           "src": "carantec.png",
+          "sizes": "512x512",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Concarneau",
+      "url": "./concarneau.html",
+      "icons": [
+        {
+          "src": "concarneau.png",
           "sizes": "512x512",
           "type": "image/png"
         }

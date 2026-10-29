@@ -2,14 +2,15 @@
 // cache en secours (l'application s'ouvre sans réseau, marée comprise).
 // Les appels météo et GitHub ne sont jamais mis en cache ici : l'application
 // gère elle-même sa mémoire de la dernière météo téléchargée.
-const CACHE = "guide-bar-3652a869fc8a";
+const CACHE = "guide-bar-4547488234ba";
 // Une seule application : l'accueil, les guides, le manifeste commun et les icônes.
 // Liste écrite par scripts/build.mjs à partir des fichiers du site.
-const SHELL = ["./","./index.html","./logonna.html","./pirou.html","./plouguerneau.html","./audierne.html","./carantec.html","./manifest.json","./icon-192.png","./icon-512.png","./icon-maskable.png","./logonna.png","./pirou.png","./plouguerneau.png","./audierne.png","./carantec.png"];
+const SHELL = ["./","./index.html","./logonna.html","./pirou.html","./plouguerneau.html","./audierne.html","./carantec.html","./concarneau.html","./manifest.json","./icon-192.png","./icon-512.png","./icon-maskable.png","./logonna.png","./pirou.png","./plouguerneau.png","./audierne.png","./carantec.png","./concarneau.png"];
 
 self.addEventListener("install", (e) => {
   // Fichier par fichier : un seul fichier absent (dépôt incomplet) ne vide plus tout le cache.
-  e.waitUntil(caches.open(CACHE).then((c) => Promise.all(SHELL.map((u) => c.add(u).catch(() => {})))).then(() => self.skipWaiting()));
+  // cache: "reload" : la copie hors ligne vient du serveur, jamais d'une version périmée du cache HTTP.
+  e.waitUntil(caches.open(CACHE).then((c) => Promise.all(SHELL.map((u) => c.add(new Request(u, { cache: "reload" })).catch(() => {})))).then(() => self.skipWaiting()));
 });
 self.addEventListener("activate", (e) => {
   e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== CACHE).map((k) => caches.delete(k)))).then(() => self.clients.claim()));

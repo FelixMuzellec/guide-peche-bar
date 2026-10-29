@@ -2,10 +2,10 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-qa7VwJdky4th/mhk0QJtE1tDvf+a+MLc2kYVLy6147U='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; manifest-src 'self'; worker-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-xw7oLYZAxACcvU66bUWQlDTCo5hu9uD/dh1n77ZSJfY='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; manifest-src 'self'; worker-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Guides de pêche du bar</title>
-<meta name="description" content="Pêche du bar aux leurres : Logonna-Daoulas (rade de Brest), Pirou Plage (Cotentin), Plouguerneau (Pays des Abers) et Audierne (Cap Sizun). Marée calculée, météo par spot, analyse de photos.">
+<meta name="description" content="Pêche du bar aux leurres : six guides en Finistère et dans la Manche, recherche de spot par nom. Marée calculée, météo par spot, analyse de photos.">
 <meta name="theme-color" content="#020617">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -17,38 +17,82 @@
 <link rel="apple-touch-icon" href="icon-maskable.png">
 <style>
   :root { color-scheme: dark; }
+  [hidden] { display: none !important; }
   body { margin: 0; background: #020617; color: #e2e8f0; font: 15px/1.55 system-ui, -apple-system, sans-serif; }
-  main { max-width: 560px; margin: 0 auto; padding: calc(32px + env(safe-area-inset-top)) 16px 48px; }
-  h1 { font-size: 22px; margin: 0 0 4px; }
-  p.sub { color: #94a3b8; margin: 0 0 24px; font-size: 13px; }
-  a.card { display: flex; gap: 14px; align-items: center; padding: 16px; margin-bottom: 12px; border: 1px solid #1e293b; border-radius: 12px;
+  main { max-width: 560px; margin: 0 auto; padding: calc(28px + env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) 48px max(16px, env(safe-area-inset-left)); }
+  h1 { font-size: 22px; margin: 0 0 4px; text-wrap: balance; }
+  p.sub { color: #94a3b8; margin: 0 0 18px; font-size: 13px; }
+  /* Recherche d'un spot par son nom, sa commune ou son guide */
+  #search { margin: 0 0 22px; }
+  #search label { display: block; font-weight: 700; font-size: 15px; margin-bottom: 6px; }
+  #search .hint { font-weight: 500; font-size: 13px; color: #94a3b8; }
+  #q { box-sizing: border-box; width: 100%; min-height: 50px; padding: 10px 14px; border: 1px solid #334155; border-radius: 12px;
+       background: #0b1626; color: #f1f5f9; font: 16px system-ui, -apple-system, sans-serif; }
+  #q::placeholder { color: #8a9bb1; }
+  #q:focus { border-color: #38bdf8; outline: 2px solid #38bdf8; outline-offset: 1px; }
+  #count { margin: 8px 2px 0; font-size: 13px; color: #94a3b8; }
+  #count:empty { display: none; }
+  #results { list-style: none; margin: 8px 0 0; padding: 0; border: 1px solid #1e293b; border-radius: 12px; overflow: hidden; }
+  #results li + li { border-top: 1px solid #1e293b; }
+  #results a { display: flex; gap: 12px; align-items: center; min-height: 56px; padding: 10px 14px; color: inherit; text-decoration: none; background: rgba(10,20,38,0.85); }
+  #results a:hover, #results a:focus-visible { background: #0b2a42; }
+  #results img { width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0; }
+  #results .t { min-width: 0; }
+  #results strong { display: block; font-size: 15.5px; }
+  #results .s { display: block; color: #cbd5e1; font-size: 13px; }
+  #results .g { display: block; color: #94a3b8; font-size: 12.5px; }
+  /* Guides regroupés par département */
+  section.dept { margin: 0 0 18px; }
+  section.dept h2 { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; font-size: 17px; margin: 0 0 10px; }
+  section.dept h2 small { font-size: 12.5px; font-weight: 600; color: #94a3b8; }
+  a.card { display: flex; gap: 14px; align-items: center; padding: 14px 16px; margin-bottom: 10px; border: 1px solid #1e293b; border-radius: 12px;
            background: rgba(10,20,38,0.8); color: inherit; text-decoration: none; }
   a.card:active, a.card:hover { border-color: #0ea5e9; }
-  a.card img { width: 56px; height: 56px; border-radius: 12px; flex-shrink: 0; }
+  a.card img { width: 52px; height: 52px; border-radius: 12px; flex-shrink: 0; }
+  a.card div { min-width: 0; }
   a.card strong { display: block; font-size: 16px; }
   a.card span { color: #94a3b8; font-size: 13px; }
   #install { margin-top: 20px; padding: 14px 16px; border: 1px solid #1e293b; border-radius: 12px; background: rgba(10,20,38,0.5); }
   #install-btn { display: block; width: 100%; min-height: 48px; margin-bottom: 10px; border: 1px solid #0ea5e9; border-radius: 10px;
                  background: #0369a1; color: #fff; font: 700 15px system-ui, -apple-system, sans-serif; cursor: pointer; }
-  #install-btn[hidden], #install-msg[hidden] { display: none; }
   #install-msg { margin: 0 0 10px; color: #4ade80; font-size: 14px; }
-  #install summary { min-height: 40px; display: flex; align-items: center; cursor: pointer; color: #38bdf8; font-weight: 600; font-size: 14.5px; }
+  #install summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; color: #38bdf8; font-weight: 600; font-size: 14.5px; }
   #install p { margin: 8px 0 0; font-size: 13.5px; color: #cbd5e1; }
   #install b { color: #e2e8f0; }
   :focus-visible { outline: 2px solid #38bdf8; outline-offset: 2px; }
   footer { color: #94a3b8; font-size: 11.5px; margin-top: 28px; }
   footer a { color: #94a3b8; }
+  /* Affichage « plein soleil » choisi dans un guide (réglage commun à l'appareil) */
+  html.sun body { background: #f5f7fa; }
+  html.sun main { background: #020617; filter: invert(1) hue-rotate(180deg); }
+  html.sun main img { filter: invert(1) hue-rotate(180deg); }
 </style>
 </head>
 <body>
 <main>
   <h1>Guides de pêche du bar</h1>
   <p class="sub">Marée calculée sur l'appareil · météo AROME et houle par spot · carte · réglementation · journal de session · analyse de photos.</p>
-  <a class="card" href="logonna.html"><img src="logonna.png" alt=""><div><strong>Logonna-Daoulas</strong><span>Rade de Brest · 11 spots, du fond de rade au goulet</span></div></a>
-  <a class="card" href="pirou.html"><img src="pirou.png" alt=""><div><strong>Pirou Plage</strong><span>Côte ouest du Cotentin · 10 spots, de Granville à Goury</span></div></a>
-  <a class="card" href="plouguerneau.html"><img src="plouguerneau.png" alt=""><div><strong>Plouguerneau</strong><span>Pays des Abers, Finistère nord · 10 spots, des abers au Conquet</span></div></a>
-  <a class="card" href="audierne.html"><img src="audierne.png" alt=""><div><strong>Audierne</strong><span>Cap Sizun et baie d'Audierne, Finistère sud · 11 spots, de la pointe du Raz à Penmarc'h</span></div></a>
-  <a class="card" href="carantec.html"><img src="carantec.png" alt=""><div><strong>Carantec</strong><span>Baie de Morlaix, Finistère nord · 6 spots, de la Penzé à Locquirec</span></div></a>
+
+  <form id="search" role="search" aria-label="Chercher un spot">
+    <label for="q">Chercher un spot <span class="hint">par son nom, sa commune ou son guide</span></label>
+    <input id="q" type="search" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="go"
+           placeholder="Trévignon, Pen-Hir, Goury…" aria-describedby="count" aria-controls="results">
+    <p id="count" role="status" aria-live="polite"></p>
+    <ul id="results" aria-label="Spots trouvés" hidden></ul>
+  </form>
+
+  <section class="dept" aria-labelledby="dept-29">
+    <h2 id="dept-29">Finistère (29) <small>5&nbsp;guides · 49&nbsp;spots</small></h2>
+    <a class="card" href="carantec.html"><img src="carantec.png" alt=""><div><strong>Carantec</strong><span>Baie de Morlaix et Haut-Léon · du Kernic à Locquirec · 7&nbsp;spots</span></div></a>
+    <a class="card" href="plouguerneau.html"><img src="plouguerneau.png" alt=""><div><strong>Plouguerneau</strong><span>Pays des Abers · des abers au Conquet · 10&nbsp;spots</span></div></a>
+    <a class="card" href="logonna.html"><img src="logonna.png" alt=""><div><strong>Logonna-Daoulas</strong><span>Rade de Brest · du fond de rade au goulet · 11&nbsp;spots</span></div></a>
+    <a class="card" href="audierne.html"><img src="audierne.png" alt=""><div><strong>Audierne</strong><span>Cap Sizun et baie d'Audierne · de la pointe du Raz à Penmarc'h · 11&nbsp;spots</span></div></a>
+    <a class="card" href="concarneau.html"><img src="concarneau.png" alt=""><div><strong>Concarneau</strong><span>Cornouaille · de l'Odet à la Laïta · 10&nbsp;spots</span></div></a>
+  </section>
+  <section class="dept" aria-labelledby="dept-50">
+    <h2 id="dept-50">Manche (50) <small>1&nbsp;guide · 10&nbsp;spots</small></h2>
+    <a class="card" href="pirou.html"><img src="pirou.png" alt=""><div><strong>Pirou Plage</strong><span>Côte ouest du Cotentin · de Granville à Goury · 10&nbsp;spots</span></div></a>
+  </section>
 
   <!-- Masqué dans l'application installée ; affiché par le script dans le navigateur. -->
   <section id="install" hidden aria-label="Installer l'application">
@@ -56,9 +100,9 @@
     <p id="install-msg" role="status" hidden></p>
     <details id="install-help">
       <summary>Installer sur le téléphone</summary>
-      <p>Une seule application regroupe cet accueil et les cinq guides. Elle s'ouvre sur cette page ; sur Android, un appui long sur son icône ouvre directement un guide.</p>
-      <p><b>Android (Chrome)</b> : la page doit être ouverte dans Chrome lui-même. Si elle s'affiche dans l'aperçu d'une autre application (lien ouvert depuis un message, GitHub…), passe d'abord par menu ⋮ → « Ouvrir dans Chrome ». Ensuite, menu ⋮ → « Installer l'application », ou « Ajouter à l'écran d'accueil » puis « Installer ». Téléphone en anglais : « Install app », ou « Add to Home screen » puis « Install ».</p>
-      <p><b>iPhone (Safari)</b> : bouton Partager → « Sur l'écran d'accueil ».</p>
+      <p>Une seule application regroupe cet accueil et les six guides. Elle s'ouvre sur cette page. Sur Android, un appui long sur son icône propose des raccourcis vers les trois premiers guides (Chrome n'en affiche pas plus) ; la recherche ci-dessus mène à tous les spots.</p>
+      <p><b>Android (Chrome)</b> : la page doit être ouverte dans Chrome lui-même. Si elle s'affiche dans l'aperçu d'une autre application (lien ouvert depuis un message, GitHub…), passe d'abord par menu ⋮ → « Ouvrir dans Chrome ». Ensuite, menu ⋮ → « Installer l'application », ou « Ajouter à l'écran d'accueil » puis « Installer ». Téléphone en anglais : « Install app », ou « Add to Home screen » puis « Install ».</p>
+      <p><b>iPhone (Safari)</b> : bouton Partager → « Sur l'écran d'accueil ».</p>
       <p>Si tu avais déjà ajouté un guide seul à l'écran d'accueil, tu peux retirer cette ancienne icône.</p>
     </details>
   </section>
@@ -66,7 +110,7 @@
   <footer>
     Chaque guide a sa propre météo et son propre journal ; la clé API des photos sert à tous.<br>
     Météo : <a href="https://open-meteo.com/">Open-Meteo.com</a> (CC BY 4.0) · Marée : constantes TICON-4 (CC BY 4.0), calcul d'après Neaps (MIT).<br>
-    Version 8.8 · 3652a869fc8a
+    Version 8.9 · 4547488234ba
   </footer>
 </main>
 <script>
@@ -75,6 +119,69 @@
   if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
     navigator.serviceWorker.register("sw.js", { scope: "./" }).catch(function () {});
   }
+  try { if (localStorage.getItem("bar:theme") === "sun") document.documentElement.classList.add("sun"); } catch (e) { /* stockage refusé */ }
+
+  // ── Recherche d'un spot ──
+  // Index écrit par scripts/build.mjs depuis les fiches des guides : [guide, id, nom, sous-titre, guide affiché, département, autres mots].
+  var SPOTS = [["carantec","carantec","Carantec : Penn al Lann – Cosmeur","Pointes, plages et parcs du Kelenn","Carantec","Finistère","Carantec Carantec (29660) Baie de Morlaix et Haut-Léon, Finistère nord"],["carantec","penze","Embouchure de la Penzé","Port de Carantec","Carantec","Finistère","Rivières de Morlaix et de la Penzé Carantec / Plouezoc'h (29660, 29252) Baie de Morlaix et Haut-Léon, Finistère nord"],["carantec","barnenez","Barnénez – Dourduff","Parcs et pointe, rive est de la rivière de Morlaix (Plouezoc'h)","Carantec","Finistère","Rivières de Morlaix et de la Penzé Carantec / Plouezoc'h (29660, 29252) Baie de Morlaix et Haut-Léon, Finistère nord"],["carantec","primel","Pointe de Primel","Primel-Trégastel, Plougasnou","Carantec","Finistère","Plougasnou Primel / Saint-Jean-du-Doigt (29630) Baie de Morlaix et Haut-Léon, Finistère nord"],["carantec","saintjean","Saint-Jean-du-Doigt","Rochers à droite de la plage, Plougasnou","Carantec","Finistère","Plougasnou Primel / Saint-Jean-du-Doigt (29630) Baie de Morlaix et Haut-Léon, Finistère nord"],["carantec","locquirec","Locquirec : pointe et digue","Port de Locquirec, baie de Locquirec","Carantec","Finistère","Locquirec Locquirec (29241) Baie de Morlaix et Haut-Léon, Finistère nord"],["carantec","kernic","Baie du Kernic","Plouescat, Plounévez-Lochrist et Ker Emma (Haut-Léon)","Carantec","Finistère","Haut-Léon (baie du Kernic) Plouescat / Plounévez-Lochrist (29430) Baie de Morlaix et Haut-Léon, Finistère nord"],["plouguerneau","pennenez","Penn Enez – Grève Blanche","Koréjou, Plouguerneau","Plouguerneau","Finistère","Pays des Abers Plouguerneau / Landéda (29880, 29870) Pays des Abers, Finistère nord"],["plouguerneau","pelguent","Pointe de Roc'h Pelguent","Plouguerneau, face à l'Île Vierge","Plouguerneau","Finistère","Pays des Abers Plouguerneau / Landéda (29880, 29870) Pays des Abers, Finistère nord"],["plouguerneau","paluden","Aber Wrac'h : Paluden – pont du Diable","Lannilis / Plouguerneau, intérieur de l'aber","Plouguerneau","Finistère","Intérieur des abers Paluden (Lannilis / Plouguerneau) Pays des Abers, Finistère nord"],["plouguerneau","saintemarguerite","Dunes de Sainte-Marguerite","Presqu'île Sainte-Marguerite, Landéda","Plouguerneau","Finistère","Pays des Abers Plouguerneau / Landéda (29880, 29870) Pays des Abers, Finistère nord"],["plouguerneau","aberbenoit","Embouchure de l'Aber Benoît","Beg ar Vilh, Landéda","Plouguerneau","Finistère","Pays des Abers Plouguerneau / Landéda (29880, 29870) Pays des Abers, Finistère nord"],["plouguerneau","kerlouan","Kerlouan : Enez Amann ar Rouz","Meneham, Côte des Légendes","Plouguerneau","Finistère","Côte des Légendes Kerlouan (29890) Pays des Abers, Finistère nord"],["plouguerneau","aberildut","Embouchure de l'Aber Ildut","Lanildut, plage du Crapaud","Plouguerneau","Finistère","Iroise nord Lanildut / Plouarzel / Le Conquet (29840, 29217) Pays des Abers, Finistère nord"],["plouguerneau","corsen","Pointe de Corsen","Plouarzel, mer d'Iroise","Plouguerneau","Finistère","Iroise nord Lanildut / Plouarzel / Le Conquet (29840, 29217) Pays des Abers, Finistère nord"],["plouguerneau","blancssablons","Plage des Blancs-Sablons","Le Conquet, au nord de la presqu'île de Kermorvan","Plouguerneau","Finistère","Iroise nord Lanildut / Plouarzel / Le Conquet (29840, 29217) Pays des Abers, Finistère nord"],["plouguerneau","kermorvan","Pointe de Kermorvan","Le Conquet, entrée du chenal du Four","Plouguerneau","Finistère","Iroise nord Lanildut / Plouarzel / Le Conquet (29840, 29217) Pays des Abers, Finistère nord"],["logonna","moulinmer","Moulin Mer","Anse de Moulin-Mer, Logonna-Daoulas","Logonna-Daoulas","Finistère","Fond de rade Logonna-Daoulas (29460) Rade de Brest"],["logonna","bendy","Pointe du Bendy","Anse du Bendy, Logonna-Daoulas","Logonna-Daoulas","Finistère","Fond de rade Logonna-Daoulas (29460) Rade de Brest"],["logonna","rostiviec","Rostiviec","Port et anse de Penfoul, Loperhet","Logonna-Daoulas","Finistère","Fond de rade Logonna-Daoulas (29460) Rade de Brest"],["logonna","camfrout","L'Hôpital-Camfrout","Rivière du Camfrout, Tibidy, Troaon","Logonna-Daoulas","Finistère","Fond de rade Logonna-Daoulas (29460) Rade de Brest"],["logonna","lauberlach","Sillon de Lauberlac'h","Anse de l'Auberlach, Plougastel-Daoulas","Logonna-Daoulas","Finistère","Fond de rade Logonna-Daoulas (29460) Rade de Brest"],["logonna","armorique","Pointe de l'Armorique","Plougastel-Daoulas, rive sud de la presqu'île","Logonna-Daoulas","Finistère","Rade centrale Landévennec / Plougastel-Daoulas Rade de Brest"],["logonna","landevennec","Landévennec","Cale de Port Maria + Sillon des Anglais","Logonna-Daoulas","Finistère","Rade centrale Landévennec / Plougastel-Daoulas Rade de Brest"],["logonna","terenez","Île de Térénez","Sortie de l'Aulne, Rosnoën","Logonna-Daoulas","Finistère","Rade centrale Landévennec / Plougastel-Daoulas Rade de Brest"],["logonna","espagnols","Pointe des Espagnols","Roscanvel, entrée du Goulet","Logonna-Daoulas","Finistère","Goulet / large Camaret-sur-Mer et goulet de Brest Rade de Brest"],["logonna","minou","Pointe du Petit Minou","Plouzané, Goulet nord","Logonna-Daoulas","Finistère","Goulet / large Camaret-sur-Mer et goulet de Brest Rade de Brest"],["logonna","penhir","Pointe de Pen-Hir","Camaret-sur-Mer, mer d'Iroise","Logonna-Daoulas","Finistère","Goulet / large Camaret-sur-Mer et goulet de Brest Rade de Brest"],["audierne","goyen","Embouchure du Goyen","Digues d'Audierne et de Poulgoazec","Audierne","Finistère","Cap Sizun Audierne / Plogoff (29770) Cap Sizun et baie d'Audierne, Finistère sud"],["audierne","sainttugen","Plage de Saint-Tugen","Primelin, baie d'Audierne","Audierne","Finistère","Cap Sizun Audierne / Plogoff (29770) Cap Sizun et baie d'Audierne, Finistère sud"],["audierne","feunteunaod","Feunteun Aod","Port-abri, Plogoff","Audierne","Finistère","Cap Sizun Audierne / Plogoff (29770) Cap Sizun et baie d'Audierne, Finistère sud"],["audierne","raz","Pointe du Raz","Plogoff, Raz de Sein","Audierne","Finistère","Cap Sizun Audierne / Plogoff (29770) Cap Sizun et baie d'Audierne, Finistère sud"],["audierne","trepasses","Baie des Trépassés","Plogoff / Cléden-Cap-Sizun","Audierne","Finistère","Cap Sizun Audierne / Plogoff (29770) Cap Sizun et baie d'Audierne, Finistère sud"],["audierne","van","Pointe du Van","Cléden-Cap-Sizun, mer d'Iroise","Audierne","Finistère","Cap Sizun Audierne / Plogoff (29770) Cap Sizun et baie d'Audierne, Finistère sud"],["audierne","brezellec","Pointe de Brézellec","Cléden-Cap-Sizun, baie de Douarnenez","Audierne","Finistère","Cap Sizun Audierne / Plogoff (29770) Cap Sizun et baie d'Audierne, Finistère sud"],["audierne","penhors","Penhors","Pouldreuzic, baie d'Audierne","Audierne","Finistère","Baie d'Audierne Pouldreuzic (29710) Cap Sizun et baie d'Audierne, Finistère sud"],["audierne","torche","Pointe de la Torche","Plomeur, sud de la baie d'Audierne","Audierne","Finistère","Pays bigouden sud Plomeur / Penmarc'h (29120, 29760) Cap Sizun et baie d'Audierne, Finistère sud"],["audierne","saintguenole","Rochers de Saint-Guénolé","Côte sauvage de Saint-Guénolé (Rocher des Victimes), Penmarc'h","Audierne","Finistère","Pays bigouden sud Plomeur / Penmarc'h (29120, 29760) Cap Sizun et baie d'Audierne, Finistère sud"],["audierne","penmarch","Pointe de Penmarc'h","Phare d'Eckmühl, Saint-Pierre (Penmarc'h)","Audierne","Finistère","Pays bigouden sud Plomeur / Penmarc'h (29120, 29760) Cap Sizun et baie d'Audierne, Finistère sud"],["concarneau","sablesblancs","Concarneau : sud des Sables Blancs","Plage des Sables Blancs et plages au sud","Concarneau","Finistère","Concarneau, baie de la Forêt et Trégunc Concarneau / Fouesnant / Trégunc (29900, 29170, 29910) Cornouaille, Finistère sud"],["concarneau","capcoz","Pointe du Cap Coz","Flèche et digue, Fouesnant, baie de la Forêt","Concarneau","Finistère","Concarneau, baie de la Forêt et Trégunc Concarneau / Fouesnant / Trégunc (29900, 29170, 29910) Cornouaille, Finistère sud"],["concarneau","begmeil","Pointe de Beg Meil","Pointe et criques, Fouesnant","Concarneau","Finistère","Concarneau, baie de la Forêt et Trégunc Concarneau / Fouesnant / Trégunc (29900, 29170, 29910) Cornouaille, Finistère sud"],["concarneau","mousterlin","Pointe de Mousterlin","Platier rocheux, Fouesnant","Concarneau","Finistère","Fouesnant et l'Odet Fouesnant / Bénodet (29170, 29950) Cornouaille, Finistère sud"],["concarneau","odet","Embouchure de l'Odet","Bénodet – Sainte-Marine, secteur aval","Concarneau","Finistère","Fouesnant et l'Odet Fouesnant / Bénodet (29170, 29950) Cornouaille, Finistère sud"],["concarneau","trevignon","Pointe de Trévignon","Roches et digue, Trégunc","Concarneau","Finistère","Concarneau, baie de la Forêt et Trégunc Concarneau / Fouesnant / Trégunc (29900, 29170, 29910) Cornouaille, Finistère sud"],["concarneau","kerjean","Pointe de Kerjean","Pointe rocheuse et plage de Don, Trégunc","Concarneau","Finistère","Concarneau, baie de la Forêt et Trégunc Concarneau / Fouesnant / Trégunc (29900, 29170, 29910) Cornouaille, Finistère sud"],["concarneau","rospico","Pointe de Rospico","Pointe et anse de Rospico, Névez","Concarneau","Finistère","Aven, Bélon et Laïta Névez / Clohars-Carnoët (29920, 29360) Cornouaille, Finistère sud"],["concarneau","portmanech","Embouchures de l'Aven et du Bélon","Port-Manec'h, Névez","Concarneau","Finistère","Aven, Bélon et Laïta Névez / Clohars-Carnoët (29920, 29360) Cornouaille, Finistère sud"],["concarneau","laita","Estuaire de la Laïta","Port du Pouldu, Clohars-Carnoët","Concarneau","Finistère","Aven, Bélon et Laïta Névez / Clohars-Carnoët (29920, 29360) Cornouaille, Finistère sud"],["pirou","pirou","Pirou Plage","Estran, épis et tables, Pirou","Pirou Plage","Manche","Côte des havres Pirou / Gouville-sur-Mer (50) Côte ouest du Cotentin"],["pirou","regneville","Régnéville","Havre et embouchure de la Sienne","Pirou Plage","Manche","Côte des havres Pirou / Gouville-sur-Mer (50) Côte ouest du Cotentin"],["pirou","gouville","Gouville-sur-Mer","Parcs et estran (le Sénéquet est au large : pas un poste du bord)","Pirou Plage","Manche","Côte des havres Pirou / Gouville-sur-Mer (50) Côte ouest du Cotentin"],["pirou","agon","Pointe d'Agon","Banc de sable et confluence du havre","Pirou Plage","Manche","Côte des havres Pirou / Gouville-sur-Mer (50) Côte ouest du Cotentin"],["pirou","portbail","Portbail","Havre, chenal et platier rocheux","Pirou Plage","Manche","Côte des Isles Portbail / Barneville-Carteret Côte ouest du Cotentin"],["pirou","carteret","Cap de Carteret","Cap rocheux, phare, tombant","Pirou Plage","Manche","Côte des Isles Portbail / Barneville-Carteret Côte ouest du Cotentin"],["pirou","granville","Granville","Pointe du Roc, marnage maximal","Pirou Plage","Manche","Baie sud Granville (50400) Côte ouest du Cotentin"],["pirou","sciotot","Anse de Sciotot","Flamanville / Les Pieux","Pirou Plage","Manche","La Hague Auderville / cap de la Hague Côte ouest du Cotentin"],["pirou","surtainville","Surtainville","Longue plage exposée, Le Rozel","Pirou Plage","Manche","La Hague Auderville / cap de la Hague Côte ouest du Cotentin"],["pirou","goury","Goury","Cap de la Hague, entrée du Raz Blanchard","Pirou Plage","Manche","La Hague Auderville / cap de la Hague Côte ouest du Cotentin"]];
+  // Sans accents, apostrophes, tirets ni espaces : « penhir », « pen hir » et « Pen-Hir » se valent, « laita » trouve « Laïta ».
+  function fold(s) { return String(s).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/œ/g, "oe").replace(/æ/g, "ae"); }
+  function compact(s) { return fold(s).replace(/[^a-z0-9]+/g, ""); }
+  var IDX = SPOTS.map(function (r) {
+    return { r: r, name: fold(r[2]), nameC: compact(r[2]), nameWords: fold(r[2]).split(/[^a-z0-9]+/).filter(Boolean),
+             sub: compact(r[3]), all: compact([r[2], r[3], r[4], r[5], r[6]].join(" ")) };
+  });
+  var q = document.getElementById("q"), list = document.getElementById("results"), count = document.getElementById("count");
+  // Rang : nom qui commence par la saisie, puis un mot du nom, puis le nom, puis le reste de la fiche.
+  function rank(e, toks, qc) {
+    if (!toks.every(function (t) { return e.all.indexOf(t) >= 0; })) return -1;
+    if (e.nameC.indexOf(qc) === 0) return 0;
+    if (e.nameWords.some(function (w) { return w.indexOf(toks[0]) === 0; }) && toks.every(function (t) { return e.nameC.indexOf(t) >= 0; })) return 1;
+    if (toks.every(function (t) { return e.nameC.indexOf(t) >= 0; })) return 2;
+    if (toks.every(function (t) { return e.sub.indexOf(t) >= 0; })) return 3;
+    return 4;
+  }
+  function el(tag, cls, text) { var x = document.createElement(tag); if (cls) x.className = cls; if (text != null) x.textContent = text; return x; }
+  function show() {
+    var raw = q.value.trim();
+    var toks = fold(raw).split(/\s+/).map(compact).filter(Boolean);
+    list.textContent = "";
+    if (!toks.length) { list.hidden = true; count.textContent = ""; return; }
+    var hits = IDX.map(function (e, i) { return { e: e, k: rank(e, toks, compact(raw)), i: i }; })
+      .filter(function (h) { return h.k >= 0; })
+      .sort(function (a, b) { return a.k - b.k || a.e.name.localeCompare(b.e.name, "fr"); });
+    if (!hits.length) { list.hidden = true; count.textContent = "Aucun spot ne correspond à « " + raw + " ». Essaie un autre nom, une commune ou un guide."; return; }
+    hits.slice(0, 12).forEach(function (h) {
+      var r = h.e.r, li = el("li"), a = el("a"), img = el("img"), t = el("span", "t");
+      a.href = r[0] + ".html#spot=" + r[1];
+      img.src = r[0] + ".png"; img.alt = "";
+      t.appendChild(el("strong", null, r[2])); t.appendChild(el("span", "s", r[3])); t.appendChild(el("span", "g", "Guide " + r[4] + " · " + r[5]));
+      a.appendChild(img); a.appendChild(t); li.appendChild(a); list.appendChild(li);
+    });
+    list.hidden = false;
+    count.textContent = hits.length === 1 ? "1 spot trouvé." : hits.length > 12 ? hits.length + " spots trouvés, les 12 premiers sont affichés." : hits.length + " spots trouvés.";
+  }
+  q.addEventListener("input", show);
+  // Touche « Aller » du clavier : ouvre le premier spot trouvé.
+  document.getElementById("search").addEventListener("submit", function (e) {
+    e.preventDefault(); var a = list.querySelector("a"); if (a && !list.hidden) location.href = a.href;
+  });
+  // Clavier : flèches entre le champ et les résultats ; Échap vide la recherche.
+  q.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowDown") { var a = list.querySelector("a"); if (a && !list.hidden) { e.preventDefault(); a.focus(); } }
+    else if (e.key === "Escape" && q.value) { e.preventDefault(); q.value = ""; show(); }
+  });
+  list.addEventListener("keydown", function (e) {
+    var links = Array.prototype.slice.call(list.querySelectorAll("a")), i = links.indexOf(document.activeElement);
+    if (i < 0) return;
+    if (e.key === "ArrowDown" && i < links.length - 1) { e.preventDefault(); links[i + 1].focus(); }
+    else if (e.key === "ArrowUp") { e.preventDefault(); (i > 0 ? links[i - 1] : q).focus(); }
+    else if (e.key === "Escape") { e.preventDefault(); q.value = ""; show(); q.focus(); }
+  });
+  // Retour arrière depuis un guide : la saisie restée dans le champ affiche de nouveau ses résultats.
+  window.addEventListener("pageshow", function () { if (q.value) show(); });
+
+  // ── Installation ──
   var standalone = (window.matchMedia && matchMedia("(display-mode: standalone)").matches) || navigator.standalone === true;
   if (standalone) return;   // déjà dans l'application installée
   var box = document.getElementById("install"), btn = document.getElementById("install-btn"),
@@ -94,7 +201,7 @@
   });
   window.addEventListener("appinstalled", function () {
     btn.hidden = true; help.open = false;
-    msg.textContent = "Application installée : ouvre-la depuis l'écran d'accueil (icône «\u00a0Pêche bar\u00a0»).";
+    msg.textContent = "Application installée : ouvre-la depuis l'écran d'accueil (icône « Pêche bar »).";
     msg.hidden = false;
   });
 })();
