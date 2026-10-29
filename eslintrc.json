@@ -1,9 +1,0 @@
-{ "env": { "browser": true, "es2022": true },
-  "parserOptions": { "ecmaVersion": 2022, "sourceType": "module", "ecmaFeatures": { "jsx": true } },
-  "plugins": ["react", "react-hooks"],
-  "settings": { "react": { "version": "18.2" } },
-  "rules": { "no-undef": "error", "no-dupe-keys": "error", "no-redeclare": "error", "no-const-assign": "error",
-             "no-use-before-define": ["error", {"functions": false, "classes": true, "variables": false}],
-             "react/jsx-no-undef": "error", "react/jsx-uses-vars": "error", "react/jsx-key": "warn",
-             "react-hooks/rules-of-hooks": "error",
-             "no-unused-vars": ["warn", {"args": "none", "varsIgnorePattern": "^_"}] } }
