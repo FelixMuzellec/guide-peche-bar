@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-7nioAKbQrT1DFBwb0zOTXKNV2SXxIymcB1PEc06YzlE=' 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://tile.openstreetmap.org; connect-src 'self' https://api.open-meteo.com https://marine-api.open-meteo.com https://historical-forecast-api.open-meteo.com; manifest-src 'self'; worker-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-p8VdbabSHa0jryUB1WwUcXSURDOGXQk7gZir5lbqRks=' 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://tile.openstreetmap.org; connect-src 'self' https://api.open-meteo.com https://marine-api.open-meteo.com https://historical-forecast-api.open-meteo.com https://api.github.com; manifest-src 'self'; worker-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Guides de pêche du bar</title>
 <meta name="description" content="Pêche du bar aux leurres : sept guides en Finistère et dans la Manche, recherche de spot par nom. Marée calculée, météo par spot, analyse de photos.">
@@ -45,10 +45,29 @@
   #results .s { display: block; color: #cbd5e1; font-size: 13px; }
   #results .g { display: block; color: #94a3b8; font-size: 12.5px; }
   #results .d { display: block; color: #7dd3fc; font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; }
-  /* Guides regroupés par département */
-  section.dept { margin: 0 0 18px; }
-  section.dept h2 { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; font-size: 17px; margin: 0 0 10px; }
-  section.dept h2 small { font-size: 12.5px; font-weight: 600; color: #94a3b8; }
+  /* v8.15 — Note du jour et tendance vers demain, à droite de chaque résultat (remplies par home.js) */
+  #results .t { flex: 1; }
+  #results .sc { flex-shrink: 0; min-width: 48px; text-align: right; font-variant-numeric: tabular-nums; }
+  #results .sc:empty { display: none; }
+  #results .sc b { display: block; font-size: 17px; font-weight: 800; white-space: nowrap; }
+  #results .sc small { display: block; font-size: 12px; color: #94a3b8; white-space: nowrap; }
+  .sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+  /* Guides regroupés par département, chaque département replié par défaut (v8.15) */
+  details.dept { margin: 0 0 10px; border: 1px solid #1e293b; border-radius: 12px; background: rgba(10,20,38,0.5); }
+  details.dept > summary { list-style: none; display: flex; align-items: center; gap: 10px; min-height: 52px; padding: 6px 14px; cursor: pointer; border-radius: 12px; }
+  details.dept > summary::-webkit-details-marker { display: none; }
+  details.dept > summary::after { content: "▾"; margin-left: auto; color: #38bdf8; font-size: 16px; transition: transform .15s; }
+  details.dept:not([open]) > summary::after { transform: rotate(-90deg); }
+  details.dept > summary:hover { background: rgba(14,165,233,0.08); }
+  details.dept h2 { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; font-size: 17px; margin: 0; }
+  details.dept h2 small { font-size: 12.5px; font-weight: 600; color: #94a3b8; }
+  details.dept > .cards { padding: 4px 10px 2px; }
+  /* Onglets Inshore / Offshore (v8.15) */
+  .tabs { display: flex; gap: 6px; margin: 0 0 18px; padding: 4px; border: 1px solid #1e293b; border-radius: 14px; background: #0b1626; }
+  .tabs [role=tab] { flex: 1; min-height: 52px; border: 0; border-radius: 10px; background: transparent; color: #cbd5e1; font: 700 15px system-ui, -apple-system, sans-serif; cursor: pointer; }
+  .tabs [role=tab] small { display: block; font-weight: 500; font-size: 12px; color: #94a3b8; }
+  .tabs [role=tab][aria-selected=true] { background: #0b2a42; color: #f1f5f9; box-shadow: inset 0 0 0 1px #38bdf8; }
+  #offshore-app .wait { margin: 0; padding: 14px; border: 1px solid #1e293b; border-radius: 12px; color: #94a3b8; font-size: 14px; }
   a.card { display: flex; gap: 14px; align-items: center; padding: 14px 16px; margin-bottom: 10px; border: 1px solid #1e293b; border-radius: 12px;
            background: rgba(10,20,38,0.8); color: inherit; text-decoration: none; }
   a.card:active, a.card:hover { border-color: #0ea5e9; }
@@ -84,6 +103,12 @@
   <h1>Guides de pêche du bar</h1>
   <p class="sub">Marée calculée sur l'appareil · météo AROME et houle par spot · carte · réglementation · journal de session · analyse de photos.</p>
 
+  <div class="tabs" role="tablist" aria-label="Type de pêche">
+    <button type="button" role="tab" id="tab-inshore" aria-controls="panel-inshore" aria-selected="true">Inshore<small>du bord · bar</small></button>
+    <button type="button" role="tab" id="tab-offshore" aria-controls="panel-offshore" aria-selected="false" tabindex="-1">Offshore<small>en bateau · toutes espèces</small></button>
+  </div>
+
+  <div role="tabpanel" id="panel-inshore" aria-labelledby="tab-inshore">
   <form id="search" role="search" aria-label="Chercher un spot">
     <label for="q">Chercher un spot <span class="hint">par son nom, sa commune ou son guide</span></label>
     <input id="q" type="search" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="go"
@@ -100,19 +125,28 @@
     <noscript><p>La carte nécessite JavaScript.</p></noscript>
   </section>
 
-  <section class="dept" aria-labelledby="dept-29">
-    <h2 id="dept-29">Finistère (29) <small>6&nbsp;guides · 56&nbsp;spots</small></h2>
+  <details class="dept" data-dept="29">
+    <summary><h2 id="dept-29">Finistère (29) <small>6&nbsp;guides · 56&nbsp;spots</small></h2></summary>
+    <div class="cards">
     <a class="card" href="carantec.html"><img src="carantec.png" alt=""><div><strong>Carantec</strong><span>Baie de Morlaix et Haut-Léon · du Kernic à Locquirec · 7&nbsp;spots</span></div></a>
     <a class="card" href="plouguerneau.html"><img src="plouguerneau.png" alt=""><div><strong>Plouguerneau</strong><span>Pays des Abers · des abers au Conquet · 10&nbsp;spots</span></div></a>
     <a class="card" href="logonna.html"><img src="logonna.png" alt=""><div><strong>Logonna-Daoulas</strong><span>Rade de Brest · du fond de rade au goulet · 11&nbsp;spots</span></div></a>
     <a class="card" href="crozon.html"><img src="crozon.png" alt=""><div><strong>Crozon</strong><span>Presqu'île de Crozon et baie de Douarnenez · de Dinan à Trénaouret · 7&nbsp;spots</span></div></a>
     <a class="card" href="audierne.html"><img src="audierne.png" alt=""><div><strong>Audierne</strong><span>Cap Sizun et baie d'Audierne · de la pointe du Raz à Penmarc'h · 11&nbsp;spots</span></div></a>
     <a class="card" href="concarneau.html"><img src="concarneau.png" alt=""><div><strong>Concarneau</strong><span>Cornouaille · de l'Odet à la Laïta · 10&nbsp;spots</span></div></a>
-  </section>
-  <section class="dept" aria-labelledby="dept-50">
-    <h2 id="dept-50">Manche (50) <small>1&nbsp;guide · 10&nbsp;spots</small></h2>
+    </div>
+  </details>
+  <details class="dept" data-dept="50">
+    <summary><h2 id="dept-50">Manche (50) <small>1&nbsp;guide · 10&nbsp;spots</small></h2></summary>
+    <div class="cards">
     <a class="card" href="pirou.html"><img src="pirou.png" alt=""><div><strong>Pirou Plage</strong><span>Côte ouest du Cotentin · de Granville à Goury · 10&nbsp;spots</span></div></a>
-  </section>
+    </div>
+  </details>
+  </div>
+
+  <div role="tabpanel" id="panel-offshore" aria-labelledby="tab-offshore" hidden>
+    <div id="offshore-app"><p class="wait">Chargement de la pêche en bateau…</p></div>
+  </div>
 
   <!-- Masqué dans l'application installée ; affiché par le script dans le navigateur. -->
   <section id="install" hidden aria-label="Installer l'application">
@@ -130,7 +164,7 @@
   <footer>
     Chaque guide a sa propre météo et son propre journal ; la clé API des photos sert à tous.<br>
     Météo : <a href="https://open-meteo.com/">Open-Meteo.com</a> (CC BY 4.0) · Marée : constantes TICON-4 (CC BY 4.0), calcul d'après Neaps (MIT).<br>
-    Version 8.14 · 22229fdffca7
+    Version 8.15 · 92034666488d
   </footer>
 </main>
 <script>
@@ -187,14 +221,31 @@
     hits.forEach(function (h) {
       var r = h.e.r, li = el("li"), a = el("a"), img = el("img"), t = el("span", "t");
       a.href = r[0] + ".html#spot=" + r[1];
+      a.setAttribute("data-k", r[0] + "/" + r[1]);
       img.src = r[0] + ".png"; img.alt = "";
       t.appendChild(el("strong", null, r[2])); t.appendChild(el("span", "s", r[3]));
       if (distOf) t.appendChild(el("span", "d", distOf(h)));
       t.appendChild(el("span", "g", "Guide " + r[4] + " · " + r[5]));
-      a.appendChild(img); a.appendChild(t); li.appendChild(a); list.appendChild(li);
+      a.appendChild(img); a.appendChild(t); a.appendChild(el("span", "sc")); li.appendChild(a); list.appendChild(li);
     });
     list.hidden = !hits.length;
+    paintScores();
   }
+  // v8.15 — Note du jour et flèche vers demain (↗ en hausse, ↘ en baisse, → stable à 0,2 point près), calculées
+  // par home.js avec le moteur de chaque guide ; arrivent après l'affichage, et se mettent à jour en place.
+  function paintScores() {
+    var S = window.BAR_SCORES || {};
+    Array.prototype.forEach.call(list.querySelectorAll("a[data-k]"), function (a) {
+      var sc = a.querySelector(".sc"), x = S[a.getAttribute("data-k")];
+      sc.textContent = "";
+      if (!x) return;
+      var b = el("b", null, x.txt + (x.arrow ? " " + x.arrow : "")); b.style.color = x.color; b.setAttribute("aria-hidden", "true");
+      sc.appendChild(b);
+      if (x.tomorrow != null) { var sm = el("small", null, "dem. " + x.tomorrow); sm.setAttribute("aria-hidden", "true"); sc.appendChild(sm); }
+      sc.appendChild(el("span", "sr", x.label));
+    });
+  }
+  window.addEventListener("bar:scores", paintScores);
   function show() {
     var raw = q.value.trim();
     var toks = fold(raw).split(/\s+/).map(compact).filter(Boolean);
@@ -208,6 +259,17 @@
     count.textContent = hits.length === 1 ? "1 spot trouvé." : hits.length > 12 ? hits.length + " spots trouvés, les 12 premiers sont affichés." : hits.length + " spots trouvés.";
   }
   q.addEventListener("input", show);
+
+  // ── Départements repliables : ceux que tu as ouverts le restent sur cet appareil ──
+  var DEPT_KEY = "bar:home:depts", depts = document.querySelectorAll("details.dept"), openDepts = [];
+  try { openDepts = JSON.parse(localStorage.getItem(DEPT_KEY) || "[]"); } catch (e) { openDepts = []; }
+  Array.prototype.forEach.call(depts, function (d) {
+    if (Array.isArray(openDepts) && openDepts.indexOf(d.getAttribute("data-dept")) >= 0) d.open = true;
+    d.addEventListener("toggle", function () {
+      var now = Array.prototype.filter.call(depts, function (x) { return x.open; }).map(function (x) { return x.getAttribute("data-dept"); });
+      try { localStorage.setItem(DEPT_KEY, JSON.stringify(now)); } catch (e) { /* stockage refusé */ }
+    });
+  });
 
   // ── Autour de moi : les spots les plus proches de la position du téléphone (GPS) ──
   var nearBtn = document.getElementById("near"), nearLabel = nearBtn.textContent;
@@ -262,6 +324,33 @@
   });
   // Retour arrière depuis un guide : la saisie restée dans le champ affiche de nouveau ses résultats.
   window.addEventListener("pageshow", function () { if (q.value) show(); });
+
+  // ── v8.15 : onglets Inshore / Offshore (lien #offshore ; le dernier choisi est gardé sur l'appareil) ──
+  var tabs = [document.getElementById("tab-inshore"), document.getElementById("tab-offshore")];
+  function pickTab(i, focus) {
+    tabs.forEach(function (t, j) {
+      t.setAttribute("aria-selected", i === j ? "true" : "false"); t.tabIndex = i === j ? 0 : -1;
+      document.getElementById(t.getAttribute("aria-controls")).hidden = i !== j;
+    });
+    if (focus) tabs[i].focus();
+    try { localStorage.setItem("bar:hometab", i ? "offshore" : "inshore"); } catch (e) { /* stockage refusé */ }
+    try { window.BAR_TAB = i ? "offshore" : "inshore"; window.dispatchEvent(new Event("bar:tab")); } catch (e) { /* ancien navigateur */ }
+  }
+  tabs.forEach(function (t, i) {
+    t.addEventListener("click", function () { pickTab(i); try { history.replaceState(null, "", i ? "#offshore" : "#inshore"); } catch (e) { /* sans effet */ } });
+    t.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight" || e.key === "ArrowLeft") { e.preventDefault(); pickTab(1 - i, true); }
+      else if (e.key === "Home") { e.preventDefault(); pickTab(0, true); } else if (e.key === "End") { e.preventDefault(); pickTab(1, true); }
+    });
+  });
+  function tabFromHash() {
+    if (location.hash === "#offshore") return 1;
+    if (location.hash === "#ajouter" || location.hash === "#inshore") return 0;
+    var m = null; try { m = localStorage.getItem("bar:hometab"); } catch (e) { /* stockage refusé */ }
+    return m === "offshore" ? 1 : 0;
+  }
+  pickTab(tabFromHash());
+  window.addEventListener("hashchange", function () { if (/^#(offshore|inshore|ajouter)$/.test(location.hash)) pickTab(tabFromHash()); });
 
   // ── Installation ──
   var standalone = (window.matchMedia && matchMedia("(display-mode: standalone)").matches) || navigator.standalone === true;

@@ -2,7 +2,7 @@
 // cache en secours (l'application s'ouvre sans réseau, marée comprise).
 // Les appels météo et GitHub ne sont jamais mis en cache ici : l'application
 // gère elle-même sa mémoire de la dernière météo téléchargée.
-const CACHE = "guide-bar-22229fdffca7";
+const CACHE = "guide-bar-92034666488d";
 // Une seule application : l'accueil, les guides, le manifeste commun et les icônes.
 // Liste écrite par scripts/build.mjs à partir des fichiers du site.
 const SHELL = ["./","./index.html","./home.js","./logonna.html","./pirou.html","./plouguerneau.html","./audierne.html","./carantec.html","./concarneau.html","./crozon.html","./manifest.json","./icon-192.png","./icon-512.png","./icon-maskable.png","./logonna.png","./pirou.png","./plouguerneau.png","./audierne.png","./carantec.png","./concarneau.png","./crozon.png"];
